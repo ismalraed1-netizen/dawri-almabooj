@@ -1,103 +1,70 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>دوري المعبوج</title>
   <style>
-    :root { --main:#e72929; --dark:#0f172a; }
-    *{box-sizing:border-box;}
-    body{margin:0;font-family:system-ui, -apple-system, "Segoe UI", sans-serif;background:#fafafa;color:#111;}
-    header{background:linear-gradient(120deg,#000 0%,#e72929 70%);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;}
-    .logo-wrap{display:flex;gap:.75rem;align-items:center;}
-    .logo-wrap img{width:68px;background:#fff;border-radius:.3rem;object-fit:contain;}
-    nav a{color:#fff;text-decoration:none;margin-left:1rem;font-size:.9rem;}
-    .announcement{background:#fff;border-right:4px solid var(--main);margin:1.5rem 1rem 0;padding:1rem 1.2rem;border-radius:.5rem;}
-    .container{max-width:1100px;margin:1.5rem auto;padding:0 1rem;display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;}
-    .card{background:#fff;border-radius:.5rem;padding:1rem;box-shadow:0 2px 8px rgba(0,0,0,.03);margin-bottom:1.2rem;}
-    table{width:100%;border-collapse:collapse;background:#fff;border-radius:.5rem;overflow:hidden;}
-    th,td{padding:.6rem .7rem;border-bottom:1px solid #eee;text-align:right;font-size:.85rem;}
-    th{background:#f8fafc;}
-    .teams-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.6rem;}
-    .team{background:#f8fafc;border:1px solid #e2e8f0;border-right:4px solid var(--main);border-radius:.4rem;padding:.5rem .6rem;}
-    footer{text-align:center;padding:1.5rem 0 2rem;color:#888;font-size:.75rem;}
-    @media(max-width:920px){.container{grid-template-columns:1fr;}header{flex-wrap:wrap;}nav{text-align:center;width:100%;}}
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f5f5f5;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #d32f2f;
+      color: white;
+      padding: 20px 10px;
+      font-size: 26px;
+      font-weight: bold;
+    }
+    img {
+      margin-top: 20px;
+      width: 220px;
+      border-radius: 14px;
+    }
+    .section {
+      background: white;
+      margin: 20px auto;
+      padding: 15px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #d32f2f;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo-wrap">
-      <img src="logo.jpg" alt="شعار دوري المعبوج">
-      <div>
-        <div style="font-weight:700;">دوري المعبوج</div>
-        <div style="font-size:.7rem;opacity:.7;">الموسم 1447 هـ</div>
-      </div>
-    </div>
-    <nav>
-      <a href="#matches">المباريات</a>
-      <a href="#scorers">الهدافون</a>
-      <a href="#teams">الفرق</a>
-      <a href="#announce">الإعلان</a>
-    </nav>
-  </header>
 
-  <section class="announcement" id="announce">
-    <h2>📢 إعلان البطولة</h2>
-    <p>تعلن اللجنة المنظمة لـ <strong>دوري المعبوج</strong> عن انطلاق البطولة يوم <strong>الخميس 16 / 5 / 1447هـ</strong> على ملعب المعبوج.</p>
-    <small>يرجى التأكد من تسجيل اللاعبين وإحضار الزي الموحد.</small>
-  </section>
+  <header>🏆 دوري المعبوج 🏆</header>
 
-  <main class="container">
-    <div>
-      <section class="card" id="matches">
-        <h2>📅 جدول المباريات</h2>
-        <table>
-          <thead><tr><th>اليوم</th><th>المباراة</th><th>الوقت</th><th>الملعب</th></tr></thead>
-          <tbody>
-            <tr><td>الخميس</td><td>المعبوج vs النخبة</td><td>8:00 م</td><td>ملعب المعبوج</td></tr>
-            <tr><td>الخميس</td><td>الفرسان vs العميد</td><td>9:15 م</td><td>ملعب المعبوج</td></tr>
-            <tr><td>الجمعة</td><td>الأصدقاء vs الساحل</td><td>8:00 م</td><td>ملعب المعبوج</td></tr>
-            <tr><td>الجمعة</td><td>النهضة vs الأبطال</td><td>9:15 م</td><td>ملعب المعبوج</td></tr>
-          </tbody>
-        </table>
-      </section>
+  <!-- شعار البطولة -->
+  <a href="https://ismalraed1-netizen.github.io/dawri-almabooj/">
+    <img src="logo" alt="شعار دوري المعبوج">
+  </a>
 
-      <section class="card" id="scorers">
-        <h2>⚽ الهدافون</h2>
-        <table>
-          <thead><tr><th>#</th><th>اللاعب</th><th>الفريق</th><th>الأهداف</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>محمد جابر</td><td>النخبة</td><td>4</td></tr>
-            <tr><td>2</td><td>حسن المعبوجي</td><td>المعبوج</td><td>3</td></tr>
-            <tr><td>3</td><td>إبراهيم عياش</td><td>الفرسان</td><td>2</td></tr>
-            <tr><td>4</td><td>عبدالله دراج</td><td>الساحل</td><td>2</td></tr>
-          </tbody>
-        </table>
-      </section>
-    </div>
+  <div class="section">
+    <h2>📅 جدول المباريات</h2>
+    <p>سيتم تحديث الجدول قريبًا...</p>
+  </div>
 
-    <aside>
-      <section class="card" id="teams">
-        <h2>🏅 الفرق المشاركة</h2>
-        <div class="teams-grid">
-          <div class="team">المعبوج</div>
-          <div class="team">النخبة</div>
-          <div class="team">الفرسان</div>
-          <div class="team">العميد</div>
-          <div class="team">الساحل</div>
-          <div class="team">الأصدقاء</div>
-          <div class="team">النهضة</div>
-          <div class="team">الأبطال</div>
-        </div>
-      </section>
+  <div class="section">
+    <h2>⚽ الهدافين</h2>
+    <p>قريبًا...</p>
+  </div>
 
-      <section class="card">
-        <h2>شعار البطولة</h2>
-        <img src="logo.jpg" alt="شعار دوري المعبوج" style="width:100%;border-radius:.4rem;">
-      </section>
-    </aside>
-  </main>
+  <div class="section">
+    <h2>🏅 الفرق المشاركة</h2>
+    <p>يتم الإعداد حاليًا...</p>
+  </div>
 
-  <footer>© دوري المعبوج - صفحة تجريبية يمكنك تعديل المحتوى والأسماء والأوقات.</footer>
+  <footer style="margin:30px 0; color:#888;">
+    © 2025 دوري المعبوج - جميع الحقوق محفوظة
+  </footer>
+
 </body>
 </html>
