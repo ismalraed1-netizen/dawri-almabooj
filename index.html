@@ -1,189 +1,209 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>دوري المعبوج</title>
-  <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #f9f9f4, #e6f4f1);
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #00796b;
-      color: white;
-      padding: 20px 10px;
-      font-size: 26px;
-      font-weight: bold;
-      border-bottom: 4px solid #004d40;
-    }
-    img {
-      margin-top: 20px;
-      width: 220px;
-      border-radius: 14px;
-      border: 3px solid #00796b;
-    }
-    .section {
-      background: #ffffff;
-      margin: 20px auto;
-      padding: 15px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 600px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      border: 1px solid #a7d7c5;
-    }
-    h2 {
-      color: #00796b;
-    }
-    .announce {
-      background-color: #e0f2f1;
-      border: 2px solid #00796b;
-      border-radius: 14px;
-      width: 90%;
-      max-width: 650px;
-      margin: 25px auto;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: right;
-      direction: rtl;
-    }
-    .announce h1 {
-      text-align: center;
-      background-color: #00796b;
-      color: white;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 24px;
-      margin-bottom: 15px;
-    }
-    .announce p {
-      color: #004d40;
-      font-size: 17px;
-      line-height: 1.8;
-      margin: 8px 0;
-    }
-    .announce ul {
-      color: #004d40;
-      font-size: 16px;
-      text-align: right;
-      padding-right: 25px;
-    }
-    .announce li {
-      margin-bottom: 5px;
-    }
-    .contact {
-      background-color: #ffffff;
-      border-radius: 10px;
-      padding: 10px;
-      margin-top: 15px;
-      border: 1px solid #a7d7c5;
-      text-align: center;
-    }
-    /* زر عرض الشروط */
-    .toggle-btn {
-      background-color: #00796b;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 18px;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: 0.3s;
-    }
-    .toggle-btn:hover {
-      background-color: #004d40;
-    }
-    /* إخفاء الشروط افتراضياً */
-    #rules {
-      display: none;
-      margin-top: 15px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول مباريات فولتا زون - الأحد</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0f172a;
+            color: white;
+        }
+        .volta-gradient {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .sponsor-gold { border-top: 3px solid #fbbf24; }
+        .sponsor-silver { border-top: 3px solid #94a3b8; }
+        .sponsor-strategic { border-top: 3px solid #ef4444; }
+        .sponsor-participating { border-top: 3px solid #3b82f6; }
+    </style>
 </head>
-<body>
+<body class="min-h-screen volta-gradient flex flex-col items-center justify-center p-4">
 
-  <header>🏆 دوري المعبوج 🏆</header>
+    <!-- Main Container mimicking the phone screen aspect ratio mostly, but responsive -->
+    <div class="w-full max-w-md bg-[#0f1623] shadow-2xl overflow-hidden rounded-xl border border-slate-800 relative">
+        
+        <!-- Background Accents -->
+        <div class="absolute top-0 left-0 w-full h-64 bg-blue-900/20 blur-3xl pointer-events-none"></div>
 
-  <!-- شعار البطولة -->
-  <a href="https://ismalraed1-netizen.github.io/dawri-almabooj/">
-    <img src="https://cdn.discordapp.com/attachments/1247838781571338382/1437725028094447738/file_00000000da7071f98dfae73a35ee3cf8.png?ex=69144946&is=6912f7c6&hm=eee8abeda090cc48b8832348ba7beffe282949c9fd46209aec23a196777ec816&" alt="شعار دوري المعبوج">
-  </a>
+        <!-- Header / Top Logos -->
+        <div class="relative z-10 px-6 pt-8 pb-4 flex justify-between items-start">
+            <!-- Right Logo (AFL equivalent) -->
+            <div class="flex flex-col items-center w-1/4">
+                <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center mb-1">
+                    <i class="fa-solid fa-futbol text-slate-900 text-2xl"></i>
+                </div>
+                <span class="text-[8px] text-center text-slate-400">رابطة الهواة لكرة القدم</span>
+            </div>
 
-  <!-- إعلان البطولة -->
-  <div class="announce">
-    <h1>إعلان البطولة</h1>
-    <p><strong>📍 الموقع:</strong> الملعب السداسي بالمعبوج</p>
-    <p>لمن يرغب بالمشاركة في البطولة عليه التواصل في أسرع وقت قبل إكتفاء العدد.</p>
-    <p><strong>عدد الفرق المسموح:</strong> 16 فريق فقط</p>
-    <p><strong>رسوم المشاركة:</strong> 100 ريال</p>
+            <!-- Center Logo (Volta Zone) -->
+            <div class="flex flex-col items-center w-2/4 -mt-2">
+                <div class="text-4xl font-black tracking-tighter text-white mb-1">
+                    <i class="fa-solid fa-v text-5xl"></i>
+                </div>
+                <span class="text-sm font-bold tracking-widest uppercase">VOLTA ZONE</span>
+            </div>
 
-    <h3 style="color:#00796b; margin-top:15px;">🏅 جوائز البطولة:</h3>
-    <ul>
-      <li>كأس المركز الأول</li>
-      <li>أفضل حارس</li>
-      <li>أفضل لاعب</li>
-      <li>هداف البطولة</li>
-    </ul>
+            <!-- Left Logo (Namasabia equivalent) -->
+            <div class="flex flex-col items-center w-1/4">
+                <div class="w-12 h-12 rounded-full border-2 border-white/20 flex items-center justify-center mb-1">
+                    <i class="fa-solid fa-users text-white text-xl"></i>
+                </div>
+                <span class="text-[8px] text-center text-slate-400">جمعية التنمية الأهلية بصبيا</span>
+            </div>
+        </div>
 
-    <div class="contact">
-      <p><strong>📞 للتواصل:</strong></p>
-      <p>عبده قاسم: 0556792173</p>
-      <p>أحمد جني: 0536440024</p>
+        <!-- Tournament Title -->
+        <div class="text-center px-4 mb-6 relative z-10">
+            <h1 class="text-lg font-bold text-white mb-1">بطولة فولتا زون الرياضية</h1>
+            <p class="text-sm text-slate-400">برعاية جمعية التنمية الأهلية بصبيا</p>
+            <h2 class="text-4xl font-black text-white mt-4 drop-shadow-lg">توقيت المباريات</h2>
+        </div>
+
+        <!-- Date Strip -->
+        <div class="bg-[#1e293b] py-2 text-center border-y border-slate-700 mb-6 relative z-10">
+            <h3 class="text-xl font-bold text-white">الأحد 23 نوفمبر</h3>
+        </div>
+
+        <!-- Matches List -->
+        <div class="px-4 space-y-3 mb-8 relative z-10">
+            
+            <!-- Match 1: El Blanco vs Argentina -->
+            <div class="bg-[#162032] rounded-lg p-1 flex items-center justify-between border border-slate-700 h-16">
+                <!-- Team Right (Argentina) -->
+                <div class="flex items-center justify-end w-[35%] pr-2">
+                    <span class="font-bold text-white text-sm md:text-base truncate">الأرجنتين</span>
+                    <div class="w-8 h-8 md:w-10 md:h-10 bg-white rounded-full ml-2 flex-shrink-0 flex items-center justify-center border-2 border-blue-400">
+                        <i class="fa-solid fa-shirt text-blue-500 text-xs md:text-sm"></i>
+                    </div>
+                </div>
+
+                <!-- Time -->
+                <div class="bg-[#1e293b] px-3 py-1 rounded text-center w-[30%] border border-slate-600">
+                    <span class="block text-xs text-slate-400">مساءً</span>
+                    <span class="text-lg font-bold text-white font-mono">8:00</span>
+                </div>
+
+                <!-- Team Left (El Blanco) -->
+                <div class="flex items-center justify-start w-[35%] pl-2">
+                    <div class="w-8 h-8 md:w-10 md:h-10 bg-white rounded-full mr-2 flex-shrink-0 flex items-center justify-center border-2 border-white">
+                        <i class="fa-solid fa-shield text-slate-900 text-xs md:text-sm"></i>
+                    </div>
+                    <span class="font-bold text-white text-sm md:text-base truncate">البلانكو</span>
+                </div>
+            </div>
+
+            <!-- Match 2: Kawakiya Stars vs Manama -->
+            <div class="bg-[#162032] rounded-lg p-1 flex items-center justify-between border border-slate-700 h-16">
+                <!-- Team Right (Kawakiya Stars) -->
+                <div class="flex items-center justify-end w-[35%] pr-2">
+                    <span class="font-bold text-white text-sm md:text-base truncate">نجوم الكواكية</span>
+                    <div class="w-8 h-8 md:w-10 md:h-10 bg-white rounded-full ml-2 flex-shrink-0 flex items-center justify-center border-2 border-yellow-500">
+                        <i class="fa-solid fa-star text-yellow-600 text-xs md:text-sm"></i>
+                    </div>
+                </div>
+
+                <!-- Time -->
+                <div class="bg-[#1e293b] px-3 py-1 rounded text-center w-[30%] border border-slate-600">
+                    <span class="block text-xs text-slate-400">مساءً</span>
+                    <span class="text-lg font-bold text-white font-mono">9:30</span>
+                </div>
+
+                <!-- Team Left (Manama) -->
+                <div class="flex items-center justify-start w-[35%] pl-2">
+                    <div class="w-8 h-8 md:w-10 md:h-10 bg-white rounded-full mr-2 flex-shrink-0 flex items-center justify-center border-2 border-red-500">
+                        <i class="fa-solid fa-fire text-red-600 text-xs md:text-sm"></i>
+                    </div>
+                    <span class="font-bold text-white text-sm md:text-base truncate">المنامة</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Info Grid (QR, Snap, Location) -->
+        <div class="grid grid-cols-3 gap-2 px-4 mb-6 relative z-10 text-xs">
+            
+            <!-- Location & Commentator -->
+            <div class="glass-panel rounded p-2 flex flex-col justify-center items-center text-center space-y-2">
+                <div class="flex items-center gap-1">
+                    <i class="fa-solid fa-location-dot text-blue-400"></i>
+                    <span class="text-[10px] leading-tight">ملعب فولتا زون - صبيا</span>
+                </div>
+                <div class="flex items-center gap-1 border-t border-slate-600 pt-1 w-full justify-center">
+                    <i class="fa-solid fa-microphone text-slate-400"></i>
+                    <span class="text-[10px]">محمد سعود</span>
+                </div>
+            </div>
+
+            <!-- Sponsor Center -->
+            <div class="glass-panel rounded p-2 flex flex-col justify-center items-center text-center">
+                <i class="fa-brands fa-snapchat text-yellow-400 text-xl mb-1"></i>
+                <span class="text-[9px] text-slate-400">الناقل الحصري</span>
+                <span class="font-bold text-[10px]">سناب بومبا سبورت</span>
+            </div>
+
+            <!-- QR Code -->
+            <div class="glass-panel rounded p-2 flex flex-col justify-center items-center text-center bg-white/5">
+                <div class="bg-white p-1 rounded mb-1">
+                   <i class="fa-solid fa-qrcode text-black text-2xl"></i>
+                </div>
+                <span class="text-[9px] font-bold leading-tight">لحجز تذاكر المباريات</span>
+                <span class="text-[7px] text-slate-400">الرجاء تصوير الباركود</span>
+            </div>
+
+        </div>
+
+        <!-- Sponsors Footer -->
+        <div class="bg-white w-full pb-4 pt-2 px-2 relative z-10">
+            <div class="flex justify-between text-center mb-2">
+                <div class="w-1/4">
+                    <p class="text-[8px] text-slate-900 font-bold mb-1">راعي إستراتيجي</p>
+                    <div class="sponsor-strategic pt-1 flex justify-center gap-1">
+                        <div class="w-6 h-6 bg-slate-200 rounded-full flex items-center justify-center text-[8px] text-slate-500"><i class="fa-solid fa-building"></i></div>
+                        <div class="w-6 h-6 bg-slate-200 rounded-full flex items-center justify-center text-[8px] text-slate-500"><i class="fa-solid fa-store"></i></div>
+                    </div>
+                </div>
+                <div class="w-1/3">
+                    <p class="text-[8px] text-slate-900 font-bold mb-1">راعي ذهبي</p>
+                    <div class="sponsor-gold pt-1 flex justify-center gap-1">
+                         <div class="w-6 h-6 bg-slate-200 rounded-full flex items-center justify-center text-[8px] text-slate-500"><i class="fa-solid fa-crown"></i></div>
+                         <div class="w-6 h-6 bg-slate-200 rounded-full flex items-center justify-center text-[8px] text-slate-500"><i class="fa-solid fa-leaf"></i></div>
+                         <div class="w-6 h-6 bg-slate-200 rounded-full flex items-center justify-center text-[8px] text-slate-500"><i class="fa-solid fa-car"></i></div>
+                    </div>
+                </div>
+                <div class="w-1/3">
+                    <p class="text-[8px] text-slate-900 font-bold mb-1">راعي فضي</p>
+                    <div class="sponsor-silver pt-1 flex justify-center gap-1">
+                        <div class="w-6 h-6 bg-slate-200 rounded-full flex items-center justify-center text-[8px] text-slate-500"><i class="fa-solid fa-shirt"></i></div>
+                        <div class="w-6 h-6 bg-slate-200 rounded-full flex items-center justify-center text-[8px] text-slate-500"><i class="fa-solid fa-ticket"></i></div>
+                    </div>
+                </div>
+            </div>
+             <!-- Bottom Row Sponsors -->
+             <div class="border-t border-slate-200 pt-2 flex justify-center gap-2 flex-wrap">
+                 <div class="flex items-center gap-1">
+                    <span class="text-[8px] text-slate-500 font-bold">راعي مشارك</span>
+                    <div class="sponsor-participating w-full h-1 rounded-full"></div>
+                 </div>
+                 <!-- Small fake logos for bottom strip -->
+                 <div class="w-8 h-4 bg-slate-100 border border-slate-300 rounded"></div>
+                 <div class="w-8 h-4 bg-slate-100 border border-slate-300 rounded"></div>
+                 <div class="w-8 h-4 bg-slate-100 border border-slate-300 rounded"></div>
+                 <div class="w-8 h-4 bg-slate-100 border border-slate-300 rounded"></div>
+                 <div class="w-8 h-4 bg-slate-100 border border-slate-300 rounded"></div>
+            </div>
+        </div>
+
     </div>
-  </div>
-
-  <!-- زر عرض الشروط -->
-  <button class="toggle-btn" onclick="toggleRules()">📜 عرض شروط الدوري</button>
-
-  <!-- شروط الدوري -->
-  <div class="announce" id="rules">
-    <h1>شروط الدوري</h1>
-    <ul>
-      <li>1- احترامك قبل كل شيء</li>
-      <li>2- يجب الفرق الحضور إلى الملعب قبل زمن المباراة بنصف ساعة .</li>
-      <li>3- عدد اللاعبين في الملعب 7 فقط . " التغيرات مفتوح</li>
-      <li>4- زمن المباراة شوطين لكل شوط 20 دقيقة .</li>
-      <li>5- يشترط زي رياضي موحد " يمنع اللعب بشلح " .</li>
-      <li>6- بوت عادي " يمنع اللعب بالأصابع " . </li>
-      <li>7- تسجيل 10 لاعبين فقط في حال تغير لاعب يفرض رسوم قدرها 20 ريال .</li>
-    </ul>
-  </div>
-
-
-  <div class="section">
-    <h2> 🎖️الفرق المشاركة</h2>
-    <p>يتم الإعداد قريبًا...</p>
-  </div>
-
-  <div class="section">
-    <h2>📅 جدول المباريات</h2>
-    <p>سيتم تحديث الجدول...</p>
-  </div>
-
-  <div class="section">
-    <h2>⚽ الهدافين</h2>
-    <p>قريبا...</p>
-  </div>
-
-  <footer style="margin:30px 0; color:#00796b;">
-    ©️ 2025 دوري المعبوج - جميع الحقوق محفوظة
-  </footer>
-
-  <script>
-    function toggleRules() {
-      const rules = document.getElementById('rules');
-      if (rules.style.display === 'none' || rules.style.display === '') {
-        rules.style.display = 'block';
-      } else {
-        rules.style.display = 'none';
-      }
-    }
-  </script>
 
 </body>
-      </html>
+                  </html> 
