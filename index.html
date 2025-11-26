@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جدول مباريات كأس النخبة - الأربعاء</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- html2canvas library for screenshot -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -30,23 +32,18 @@
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
             font-size: 5rem; 
         }
-        
-        @media print {
-            .no-print { display: none !important; }
-            body { -webkit-print-color-adjust: exact; }
-        }
     </style>
 </head>
 <body class="min-h-screen volta-gradient flex flex-col items-center justify-center p-4">
 
-    <!-- Download Button (High Quality) -->
-    <button onclick="window.print()" class="no-print fixed bottom-6 right-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-full shadow-lg flex items-center gap-3 z-50 transition-all border border-emerald-400 hover:shadow-emerald-500/50 hover:scale-105 group">
-        <i class="fa-solid fa-cloud-arrow-down text-xl group-hover:animate-bounce"></i>
-        <span class="text-lg">تحميل بجودة عالية</span>
+    <!-- Download As Image Button -->
+    <button id="downloadBtn" onclick="downloadImage()" class="fixed bottom-6 right-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-full shadow-lg flex items-center gap-3 z-50 transition-all border border-emerald-400 hover:shadow-emerald-500/50 hover:scale-105 group">
+        <i class="fa-solid fa-image text-xl group-hover:animate-pulse"></i>
+        <span class="text-lg">تحميل كصورة</span>
     </button>
 
-    <!-- Main Container -->
-    <div class="w-full max-w-md bg-[#022c22] shadow-2xl overflow-hidden rounded-xl border border-emerald-900 relative pb-6">
+    <!-- Main Container (Target for Capture) -->
+    <div id="capture-target" class="w-full max-w-md bg-[#022c22] shadow-2xl overflow-hidden rounded-xl border border-emerald-900 relative pb-6">
         
         <!-- Background Accents -->
         <div class="absolute top-0 left-0 w-full h-64 bg-emerald-500/20 blur-3xl pointer-events-none"></div>
@@ -96,7 +93,7 @@
         <div class="px-4 space-y-4 mb-8 relative z-10 min-h-[150px] flex flex-col justify-center">
             
             <!-- Match 1 -->
-            <div class="bg-[#065f46] rounded-lg p-4 flex items-center justify-between border border-emerald-700 h-28 shadow-lg hover:bg-[#065f46]/80 transition">
+            <div class="bg-[#065f46] rounded-lg p-4 flex items-center justify-between border border-emerald-700 h-28 shadow-lg">
                 <!-- Team Right -->
                 <div class="flex items-center justify-center w-[37.5%] text-center">
                     <span class="font-black text-white text-xl md:text-2xl truncate tracking-wide drop-shadow-md leading-tight">الأرسنال</span>
@@ -154,6 +151,36 @@
         </div>
 
     </div>
+
+    <script>
+        function downloadImage() {
+            const element = document.getElementById('capture-target');
+            const btn = document.getElementById('downloadBtn');
+            const originalText = btn.innerHTML;
+            
+            // Show loading state
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...';
+            
+            html2canvas(element, {
+                backgroundColor: null, // Keep transparency if any
+                scale: 2, // Improve quality
+                useCORS: true // Try to load external assets
+            }).then(canvas => {
+                // Create download link
+                const link = document.createElement('a');
+                link.download = 'جدول_مباريات_كأس_النخبة_الاربعاء.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                // Restore button
+                btn.innerHTML = originalText;
+            }).catch(err => {
+                console.error('Error capturing image:', err);
+                alert('حدث خطأ أثناء تحميل الصورة. يرجى المحاولة مرة أخرى.');
+                btn.innerHTML = originalText;
+            });
+        }
+    </script>
 
 </body>
 </html>
