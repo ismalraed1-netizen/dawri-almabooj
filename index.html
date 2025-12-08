@@ -3,466 +3,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تصميم ملصق السيارة - رفع شعارات البنوك</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>نهائي كأس النخبة - تحكم كامل</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-orange: #eb7c22;
-            --primary-green: #7ab53d;
-            --bg-sticker: #fffcf5;
-            --alinma-color: #6d4c41; /* بني الإنماء */
-            --rajhi-color: #003f7e; /* أزرق الراجحي */
-        }
-
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            background-color: #022c22; /* Dark Emerald */
+            color: white;
+            user-select: none; /* Prevent text selection while dragging */
+        }
+        .volta-gradient {
+            background: linear-gradient(180deg, #022c22 0%, #064e3b 50%, #022c22 100%);
+        }
+        .glass-panel {
+            background: rgba(6, 78, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Silver Trophy Effect */
+        .silver-trophy {
+            background: linear-gradient(to bottom, #e2e8f0 0%, #94a3b8 50%, #475569 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+            font-size: 5rem; 
         }
 
-        .container {
-            width: 100%;
-            max-width: 900px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .sticker-wrapper {
-            width: 100%;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .sticker {
-            background: linear-gradient(to bottom right, #ffffff, #fdfbf7);
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            padding: 25px 35px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
+        /* Player Mask & Image Styles */
+        .player-mask {
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        /* منطقة رفع الشعار الرئيسي */
-        .logo-upload-area {
-            flex: 0 0 220px;
-            height: 220px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-left: 30px;
-            border: 3px dashed #ccc;
-            border-radius: 12px;
-            background-color: #fafafa;
-            cursor: pointer;
-            transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
-        }
-
-        .logo-upload-area:hover {
-            border-color: var(--primary-orange);
-            background-color: #fffaf5;
-        }
-
-        .upload-placeholder {
-            text-align: center;
-            color: #888;
-            pointer-events: none;
-            padding: 10px;
-        }
-
-        .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: #bbb;
-        }
-
-        .upload-text {
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        #preview-image {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            display: none;
-            padding: 10px;
-        }
-
-        .reset-btn {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            background: rgba(255, 0, 0, 0.7);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-            display: none;
-            align-items: center;
+            display: flex;
             justify-content: center;
-            font-size: 12px;
-            z-index: 10;
+            align-items: flex-end;
+            border-radius: 0.5rem 0.5rem 0 0;
+            /* Debug border to see area */
+            /* border: 1px dashed rgba(255,255,255,0.1); */
         }
 
-        /* قسم المعلومات */
-        .info-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .player-img {
+            position: relative; /* Changed from object-fit to allow transform */
+            max-width: none; /* Allow image to exceed container width */
+            /* Initial state handled by JS */
+            cursor: grab;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+            transform-origin: center bottom;
+            transition: filter 0.3s;
+        }
+        
+        .player-img:active {
+            cursor: grabbing;
         }
 
-        .info-row {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 12px 15px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.7);
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
+        /* Controls */
+        .img-controls {
+            opacity: 0; 
+            transition: opacity 0.3s;
         }
-
-        /* منطقة رفع شعار البنك */
-        .bank-upload-area {
-            width: 50px;
-            height: 50px;
+        .player-container:hover .img-controls {
+            opacity: 1;
+        }
+        
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 12px;
+            width: 12px;
             border-radius: 50%;
-            border: 2px dashed #ccc;
-            background: #fafafa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #fcd34d;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
+            margin-top: -4px; 
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
         }
-
-        .bank-upload-area:hover {
-            border-color: var(--primary-orange);
-            background-color: #fffaf5;
-        }
-
-        .bank-upload-icon {
-            font-size: 1.5rem;
-            color: #ddd;
-            pointer-events: none;
-        }
-
-        .bank-preview-image {
+        input[type=range]::-webkit-slider-runnable-track {
             width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .bank-reset-btn {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: rgba(255, 0, 0, 0.8);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            height: 4px;
             cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            z-index: 10;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
         }
 
-        .label {
-            font-weight: 700;
-            font-size: 1.1rem;
-            min-width: 170px;
-            color: #444;
+        /* Hide elements during capture/print */
+        @media print {
+            .no-print { display: none !important; }
+            .img-controls { display: none !important; }
+            .upload-label { display: none !important; }
+            body { -webkit-print-color-adjust: exact; }
         }
 
-        /* الآيبان بخط واحد ونظيف */
-        .iban-text {
-            font-family: 'Arial', sans-serif;
-            font-weight: 700;
-            font-size: 1.25rem;
-            letter-spacing: 0.5px;
-            direction: ltr;
-            color: #333;
-            text-align: left;
-            flex: 1;
-            white-space: nowrap;
+        .capturing .no-capture {
+            display: none !important;
         }
-
-        .contact-row {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            border-top: 2px solid #eee;
-            padding-top: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #555;
-            background: #f9f9f9;
-            padding: 8px 16px;
-            border-radius: 50px;
-        }
-
-        .contact-item i { font-size: 1.2rem; }
-        .whatsapp-item i { color: #25D366; }
-        .email-item i { color: #0078D4; }
-        .email-text { font-family: sans-serif; direction: ltr; }
-
-        .save-button {
-            background-color: var(--primary-green);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(124, 179, 66, 0.4);
-            transition: transform 0.2s, background-color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .save-button:hover { background-color: #6a9b35; transform: translateY(-2px); }
-
-        @media (max-width: 768px) {
-            .sticker { flex-direction: column; padding: 20px; }
-            .logo-upload-area { width: 100%; height: 180px; margin-left: 0; margin-bottom: 25px; }
-            .info-section { width: 100%; }
-            .info-row { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .contact-row { flex-direction: column; }
-            .iban-text { font-size: 1.1rem; align-self: flex-end; text-align: right; }
+        .capturing .img-controls {
+            display: none !important;
         }
     </style>
-</head>
-<body>
+    <script>
+        // Store state for each image
+        const imgState = {
+            'playerImg1': { x: 0, y: 0, scale: 1 },
+            'playerImg2': { x: 0, y: 0, scale: 1 }
+        };
 
-<div class="container">
-    <h2 style="color: #444;">التصميم النهائي (رفع الشعارات يدوياً)</h2>
-    
-    <div class="sticker-wrapper" id="sticker-capture-area">
-        <div class="sticker">
+        let activeImgId = null;
+        let startX = 0;
+        let startY = 0;
+
+        function loadFile(event, imgId, iconId, sliderId) {
+            var image = document.getElementById(imgId);
+            var icon = document.getElementById(iconId);
+            var slider = document.getElementById(sliderId);
             
-            <!-- Main Logo Upload -->
-            <div class="logo-upload-area" onclick="document.getElementById('main-file-input').click()">
-                <button class="reset-btn" id="main-reset-btn" onclick="resetMainLogo(event)">✕</button>
-                <div class="upload-placeholder" id="main-upload-placeholder">
-                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                    <div class="upload-text">اضغط لرفع الشعار الرئيسي</div>
+            if(event.target.files && event.target.files[0]) {
+                image.src = URL.createObjectURL(event.target.files[0]);
+                image.classList.remove('hidden');
+                image.onload = function() {
+                    // Reset position when loading new image
+                    imgState[imgId] = { x: 0, y: 0, scale: 1 };
+                    slider.value = 1;
+                    updateTransform(imgId);
+                    // Hide placeholder
+                    if(icon) icon.style.display = 'none';
+                }
+            }
+        }
+
+        function updateTransform(imgId) {
+            const img = document.getElementById(imgId);
+            const state = imgState[imgId];
+            img.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+        }
+
+        function handleZoom(val, imgId) {
+            imgState[imgId].scale = parseFloat(val);
+            updateTransform(imgId);
+        }
+
+        // Drag Logic
+        function startDrag(e, imgId) {
+            e.preventDefault(); // Prevent default drag behavior
+            activeImgId = imgId;
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            startX = clientX - imgState[imgId].x;
+            startY = clientY - imgState[imgId].y;
+            document.getElementById(imgId).style.cursor = 'grabbing';
+        }
+
+        function doDrag(e) {
+            if (!activeImgId) return;
+            e.preventDefault();
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            
+            imgState[activeImgId].x = clientX - startX;
+            imgState[activeImgId].y = clientY - startY;
+            updateTransform(activeImgId);
+        }
+
+        function stopDrag() {
+            if(activeImgId) {
+                document.getElementById(activeImgId).style.cursor = 'grab';
+                activeImgId = null;
+            }
+        }
+
+        // Add global listeners for drag release (so it works even if mouse leaves image)
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+        document.addEventListener('mousemove', doDrag, { passive: false });
+        document.addEventListener('touchmove', doDrag, { passive: false });
+
+
+        function downloadImage() {
+            const element = document.getElementById('schedule-card');
+            const btn = document.getElementById('download-btn');
+            
+            document.body.classList.add('capturing');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...';
+
+            html2canvas(element, {
+                scale: 3, 
+                backgroundColor: null, 
+                useCORS: true,
+                allowTaint: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'نهائي-كاس-النخبة.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                document.body.classList.remove('capturing');
+                btn.innerHTML = originalText;
+            }).catch(err => {
+                console.error("Error:", err);
+                alert("حدث خطأ.");
+                document.body.classList.remove('capturing');
+                btn.innerHTML = originalText;
+            });
+        }
+    </script>
+</head>
+<body class="min-h-screen volta-gradient flex flex-col items-center justify-center p-4">
+
+    <!-- Buttons -->
+    <div class="fixed bottom-4 right-4 z-50 flex gap-2 no-print no-capture">
+        <button id="download-btn" onclick="downloadImage()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg flex items-center gap-2 transition-all border border-blue-500">
+            <i class="fa-solid fa-image"></i>
+            حفظ كصورة
+        </button>
+        <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-full shadow-lg flex items-center gap-2 transition-all border border-emerald-500">
+            <i class="fa-solid fa-file-pdf"></i>
+            حفظ PDF
+        </button>
+    </div>
+
+    <!-- Main Card -->
+    <div id="schedule-card" class="w-full max-w-md bg-[#022c22] shadow-2xl overflow-hidden rounded-xl border border-emerald-900 relative pb-6">
+        
+        <div class="absolute top-0 left-0 w-full h-64 bg-emerald-500/20 blur-3xl pointer-events-none"></div>
+
+        <!-- Header -->
+        <div class="relative z-10 px-6 pt-8 pb-4 flex justify-between items-start">
+            <div class="flex flex-col items-center w-1/4">
+                <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center mb-1 shadow-lg shadow-emerald-900/50">
+                    <i class="fa-solid fa-futbol text-emerald-900 text-2xl"></i>
                 </div>
-                <img id="preview-image" alt="شعارك">
-                <input type="file" id="main-file-input" accept="image/*" onchange="previewMainLogo(event)" style="display: none;">
+                <span class="text-[8px] text-center text-emerald-200/80 leading-tight mt-1">لا تجعل الكرة عبئاً عليك وألعبها للمتعة</span>
+            </div>
+            <div class="flex flex-col items-center w-2/4 -mt-6">
+                <div class="relative mb-1 flex justify-center items-center h-24 w-24">
+                    <i class="fa-solid fa-trophy silver-trophy"></i>
+                </div>
+            </div>
+            <div class="flex flex-col items-center w-1/4">
+                <div class="w-12 h-12 rounded-full border-2 border-emerald-400/30 flex items-center justify-center mb-1 bg-emerald-900/50">
+                    <i class="fa-solid fa-users text-white text-xl"></i>
+                </div>
+                <span class="text-[8px] text-center text-emerald-200/80 leading-tight mt-1">جمعية بناء وتنمية مساكن</span>
+            </div>
+        </div>
+
+        <div class="text-center px-4 mb-6 relative z-10">
+            <h1 class="text-lg font-bold text-emerald-100 mb-1">بطولة كأس النخبه الرياضية</h1>
+            <p class="text-xs md:text-sm text-emerald-300/80 font-semibold bg-emerald-900/30 inline-block px-3 py-1 rounded-full border border-emerald-800">
+                برعاية جمعية بناء وتنمية مساكن بمنطقة جازان
+            </p>
+            <h2 class="text-4xl font-black text-white mt-4 drop-shadow-lg">المباراة النهائية</h2>
+        </div>
+
+        <div class="bg-[#064e3b] py-2 text-center border-y border-emerald-800 mb-8 relative z-10 shadow-md mx-4 rounded">
+            <h3 class="text-xl font-bold text-emerald-50">الثلاثاء 9 ديسمبر</h3>
+        </div>
+
+        <!-- Match Area -->
+        <div class="px-4 space-y-4 mb-8 relative z-10">
+            
+            <div class="no-print no-capture text-center mb-2 bg-emerald-900/50 py-1 rounded border border-emerald-800/50">
+                <p class="text-[10px] text-yellow-300">
+                    <i class="fa-solid fa-arrows-up-down-left-right"></i> حرك الصورة باللمس/الماوس | <i class="fa-solid fa-magnifying-glass-plus"></i> كبّر من الشريط
+                </p>
             </div>
 
-            <!-- Info -->
-            <div class="info-section">
-                <!-- Alinma -->
-                <div class="info-row alinma">
-                    <div class="bank-upload-area" onclick="document.getElementById('alinma-file-input').click()">
-                         <button class="bank-reset-btn" id="alinma-reset-btn" onclick="resetBankLogo(event, 'alinma')">✕</button>
-                        <i class="fas fa-plus-circle bank-upload-icon" id="alinma-upload-icon"></i>
-                        <img id="alinma-preview-image" class="bank-preview-image" alt="شعار الإنماء">
-                        <input type="file" id="alinma-file-input" accept="image/*" onchange="previewBankLogo(event, 'alinma')" style="display: none;">
+            <!-- Card -->
+            <div class="bg-gradient-to-b from-[#065f46] to-[#022c22] rounded-lg p-2 flex items-end justify-between border border-emerald-500/50 h-64 shadow-2xl relative overflow-hidden group">
+                
+                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+
+                <!-- RIGHT Player Container -->
+                <div class="flex flex-col items-center justify-end w-[35%] text-center z-10 h-full pb-3 relative player-container group/edit">
+                    
+                    <!-- Controls (Zoom & Upload) -->
+                    <div class="img-controls absolute top-0 left-0 right-0 z-30 flex flex-col items-center pt-2">
+                        <label for="upload1" class="cursor-pointer bg-black/60 hover:bg-black/80 text-white rounded-full px-2 py-1 mb-1 backdrop-blur-sm border border-white/20 shadow upload-label">
+                            <i class="fa-solid fa-camera text-xs"></i> <span class="text-[8px]">صورة</span>
+                        </label>
+                        <input type="range" id="zoom1" min="0.5" max="3" step="0.1" value="1" class="w-16 h-1 bg-gray-400 rounded-lg appearance-none cursor-pointer" oninput="handleZoom(this.value, 'playerImg1')">
                     </div>
-                    <div class="label" style="color: var(--alinma-color);">حسابنا في مصرف الإنماء</div>
-                    <div class="iban-text">SA8805000086280080008000</div>
+                    <input type="file" accept="image/*" id="upload1" class="hidden" onchange="loadFile(event, 'playerImg1', 'placeholder1', 'zoom1')">
+
+                    <!-- Image Mask Area -->
+                    <div class="player-mask mb-1">
+                        <i id="placeholder1" class="fa-solid fa-user-tie text-6xl text-emerald-500/30 absolute bottom-10 pointer-events-none"></i>
+                        <img id="playerImg1" src="" class="h-40 w-auto hidden player-img" alt="لاعب" 
+                             onmousedown="startDrag(event, 'playerImg1')" 
+                             ontouchstart="startDrag(event, 'playerImg1')">
+                    </div>
+
+                    <!-- Name -->
+                    <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-2 py-1 rounded w-full shadow-lg z-20 relative">
+                        <span class="block font-black text-white text-lg tracking-wide leading-tight">البلانكو</span>
+                    </div>
                 </div>
 
-                <!-- Rajhi -->
-                <div class="info-row rajhi">
-                    <div class="bank-upload-area" onclick="document.getElementById('rajhi-file-input').click()">
-                        <button class="bank-reset-btn" id="rajhi-reset-btn" onclick="resetBankLogo(event, 'rajhi')">✕</button>
-                        <i class="fas fa-plus-circle bank-upload-icon" id="rajhi-upload-icon"></i>
-                        <img id="rajhi-preview-image" class="bank-preview-image" alt="شعار الراجحي">
-                        <input type="file" id="rajhi-file-input" accept="image/*" onchange="previewBankLogo(event, 'rajhi')" style="display: none;">
+                <!-- VS Center -->
+                <div class="flex flex-col items-center justify-center w-[20%] h-full z-10 pb-4">
+                    <div class="mb-auto mt-8">
+                        <i class="fa-solid fa-crown text-yellow-400 text-2xl animate-pulse"></i>
                     </div>
-                    <div class="label" style="color: var(--rajhi-color);">حسابنا في مصرف الراجحي</div>
-                    <div class="iban-text">SA9380000601608010990904</div>
+                    <div class="bg-[#064e3b] px-1 py-2 rounded-lg text-center w-full border border-emerald-400/50 shadow-lg shadow-emerald-900/50 mb-2">
+                        <span class="block text-[8px] text-emerald-200 font-bold mb-0.5">مساءً</span>
+                        <span class="text-2xl font-black text-white font-mono leading-none">10:00</span>
+                    </div>
+                    <span class="text-[10px] text-emerald-300/80 font-bold">VS</span>
                 </div>
 
-                <div class="contact-row">
-                    <div class="contact-item whatsapp-item">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>055 105 6560 :للتواصل</span>
+                <!-- LEFT Player Container -->
+                <div class="flex flex-col items-center justify-end w-[35%] text-center z-10 h-full pb-3 relative player-container group/edit">
+                    
+                    <!-- Controls -->
+                    <div class="img-controls absolute top-0 left-0 right-0 z-30 flex flex-col items-center pt-2">
+                        <label for="upload2" class="cursor-pointer bg-black/60 hover:bg-black/80 text-white rounded-full px-2 py-1 mb-1 backdrop-blur-sm border border-white/20 shadow upload-label">
+                            <i class="fa-solid fa-camera text-xs"></i> <span class="text-[8px]">صورة</span>
+                        </label>
+                        <input type="range" id="zoom2" min="0.5" max="3" step="0.1" value="1" class="w-16 h-1 bg-gray-400 rounded-lg appearance-none cursor-pointer" oninput="handleZoom(this.value, 'playerImg2')">
                     </div>
-                    <div class="contact-item email-item">
-                        <i class="far fa-envelope"></i>
-                        <span class="email-text">jbwk1438@hotmail.com</span>
+                    <input type="file" accept="image/*" id="upload2" class="hidden" onchange="loadFile(event, 'playerImg2', 'placeholder2', 'zoom2')">
+
+                    <!-- Image Mask Area -->
+                    <div class="player-mask mb-1">
+                        <i id="placeholder2" class="fa-solid fa-user-tie text-6xl text-emerald-500/30 absolute bottom-10 pointer-events-none"></i>
+                        <img id="playerImg2" src="" class="h-40 w-auto hidden player-img" alt="لاعب"
+                             onmousedown="startDrag(event, 'playerImg2')" 
+                             ontouchstart="startDrag(event, 'playerImg2')">
+                    </div>
+
+                    <!-- Name -->
+                    <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-2 py-1 rounded w-full shadow-lg z-20 relative">
+                        <span class="block font-black text-white text-lg tracking-wide leading-tight">سما جازان</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Info Grid -->
+        <div class="grid grid-cols-2 gap-4 px-4 relative z-10 text-xs h-32">
+            <div class="glass-panel rounded-lg p-2 flex flex-col justify-start items-center text-center shadow-md border-t-2 border-emerald-500 h-full">
+                <div class="flex items-center gap-2 mb-2 border-b border-emerald-600/30 pb-1 w-full justify-center shrink-0">
+                    <i class="fa-solid fa-location-dot text-emerald-400"></i>
+                    <span class="text-[10px] text-emerald-100 font-bold">موقع النهائي</span>
+                </div>
+                <div class="w-full flex-1 flex items-center justify-center">
+                    <div class="flex justify-center items-center px-2 bg-emerald-900/40 rounded py-2 w-full h-full">
+                        <span class="text-[12px] text-white font-bold">ملعب المعبوج - جازان</span>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-panel rounded-lg p-2 flex flex-col justify-start items-center text-center shadow-md border-t-2 border-emerald-500 h-full">
+                <div class="flex items-center gap-2 mb-2 border-b border-emerald-600/30 pb-1 w-full justify-center shrink-0">
+                     <i class="fa-solid fa-users-gear text-emerald-400"></i>
+                    <span class="text-[10px] text-emerald-100 font-bold">منظم البطولة للتواصل</span>
+                </div>
+                <div class="w-full space-y-2 flex-1 flex flex-col justify-center">
+                    <div class="flex flex-col justify-center items-center px-2 bg-emerald-900/40 rounded py-1">
+                        <span class="text-[10px] text-white font-bold mb-0.5">عبده قاسم</span>
+                        <span class="text-[11px] text-emerald-300 font-mono dir-ltr tracking-wider font-bold">0556792173</span>
+                    </div>
+                    <div class="flex flex-col justify-center items-center px-2 bg-emerald-900/40 rounded py-1">
+                        <span class="text-[10px] text-white font-bold mb-0.5">أحمد جني</span>
+                        <span class="text-[11px] text-emerald-300 font-mono dir-ltr tracking-wider font-bold">0536440024</span>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
-    
-    <button class="save-button" onclick="downloadSticker()">
-        <i class="fas fa-download"></i>
-        حفظ التصميم كصورة
-    </button>
-</div>
-
-<script>
-    // دالة الشعار الرئيسي
-    function previewMainLogo(event) {
-        const input = event.target;
-        const preview = document.getElementById('preview-image');
-        const placeholder = document.getElementById('main-upload-placeholder');
-        const resetBtn = document.getElementById('main-reset-btn');
-        const container = document.querySelector('.logo-upload-area');
-
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-                placeholder.style.display = 'none';
-                resetBtn.style.display = 'flex';
-                container.style.borderStyle = 'solid';
-                container.style.borderColor = 'transparent';
-                container.style.backgroundColor = 'white'; 
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function resetMainLogo(event) {
-        event.stopPropagation();
-        const input = document.getElementById('main-file-input');
-        const preview = document.getElementById('preview-image');
-        const placeholder = document.getElementById('main-upload-placeholder');
-        const resetBtn = document.getElementById('main-reset-btn');
-        const container = document.querySelector('.logo-upload-area');
-
-        input.value = "";
-        preview.src = "";
-        preview.style.display = 'none';
-        placeholder.style.display = 'block';
-        resetBtn.style.display = 'none';
-        container.style.borderStyle = 'dashed';
-        container.style.borderColor = '#ccc';
-        container.style.backgroundColor = '#fafafa';
-    }
-
-    // دالة شعارات البنوك
-    function previewBankLogo(event, bankName) {
-        const input = event.target;
-        const preview = document.getElementById(bankName + '-preview-image');
-        const icon = document.getElementById(bankName + '-upload-icon');
-        const resetBtn = document.getElementById(bankName + '-reset-btn');
-        const container = input.parentElement;
-
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-                icon.style.display = 'none';
-                resetBtn.style.display = 'flex';
-                container.style.borderStyle = 'solid';
-                container.style.borderColor = 'transparent';
-                container.style.backgroundColor = 'white';
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function resetBankLogo(event, bankName) {
-        event.stopPropagation();
-        const input = document.getElementById(bankName + '-file-input');
-        const preview = document.getElementById(bankName + '-preview-image');
-        const icon = document.getElementById(bankName + '-upload-icon');
-        const resetBtn = document.getElementById(bankName + '-reset-btn');
-        const container = input.parentElement;
-
-        input.value = "";
-        preview.src = "";
-        preview.style.display = 'none';
-        icon.style.display = 'block';
-        resetBtn.style.display = 'none';
-        container.style.borderStyle = 'dashed';
-        container.style.borderColor = '#ccc';
-        container.style.backgroundColor = '#fafafa';
-    }
-
-
-    function downloadSticker() {
-        // إخفاء أزرار الحذف قبل الالتقاط
-        const mainResetBtn = document.getElementById('main-reset-btn');
-        const alinmaResetBtn = document.getElementById('alinma-reset-btn');
-        const rajhiResetBtn = document.getElementById('rajhi-reset-btn');
-
-        const mainWasVisible = mainResetBtn.style.display;
-        const alinmaWasVisible = alinmaResetBtn.style.display;
-        const rajhiWasVisible = rajhiResetBtn.style.display;
-
-        mainResetBtn.style.display = 'none';
-        alinmaResetBtn.style.display = 'none';
-        rajhiResetBtn.style.display = 'none';
-
-        const stickerElement = document.querySelector('.sticker');
-
-        html2canvas(stickerElement, {
-            scale: 2, 
-            useCORS: true,
-            backgroundColor: null
-        }).then(canvas => {
-            // إعادة إظهار أزرار الحذف
-            mainResetBtn.style.display = mainWasVisible;
-            alinmaResetBtn.style.display = alinmaWasVisible;
-            rajhiResetBtn.style.display = rajhiWasVisible;
-
-            const link = document.createElement('a');
-            link.download = 'sticker-design-final-custom-logos.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }).catch(err => {
-            console.error("Error:", err);
-            alert("حدث خطأ أثناء حفظ الصورة.");
-            // إعادة إظهار أزرار الحذف في حال الخطأ
-            mainResetBtn.style.display = mainWasVisible;
-            alinmaResetBtn.style.display = alinmaWasVisible;
-            rajhiResetBtn.style.display = rajhiWasVisible;
-        });
-    }
-</script>
 
 </body>
 </html>
+
 
