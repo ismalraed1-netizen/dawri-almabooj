@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نهائي كأس النخبة - تصميم نظيف</title>
+    <title>النهائي</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -16,7 +16,8 @@
             user-select: none;
             overflow-x: hidden;
         }
-        
+
+        /* Capture Frame & Ratios */
         #capture-frame {
             transition: all 0.5s ease-in-out;
             background: linear-gradient(180deg, #022c22 0%, #064e3b 50%, #022c22 100%);
@@ -35,6 +36,13 @@
 
         #schedule-content { width: 100%; max-width: 28rem; position: relative; z-index: 10; }
 
+        .glass-panel {
+            background: rgba(6, 78, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Silver Trophy Effect */
         .silver-trophy {
             background: linear-gradient(to bottom, #e2e8f0 0%, #94a3b8 50%, #475569 100%);
             -webkit-background-clip: text;
@@ -43,63 +51,29 @@
             font-size: 5rem; 
         }
 
-        .player-mask {
-            overflow: hidden;
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            border-radius: 0.5rem 0.5rem 0 0;
-        }
-
-        .player-img {
-            position: relative;
-            max-width: none;
-            cursor: grab;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
-            transform-origin: center bottom;
-            transition: filter 0.3s;
-        }
-        
-        .player-img:active { cursor: grabbing; }
-
-        .img-controls { opacity: 0; transition: opacity 0.3s; }
-        .player-container:hover .img-controls { opacity: 1; }
-        
-        input[type=range] { -webkit-appearance: none; background: transparent; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 12px; width: 12px; border-radius: 50%; background: #fcd34d; cursor: pointer; margin-top: -4px; box-shadow: 0 0 4px rgba(0,0,0,0.5); }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255,255,255,0.3); border-radius: 2px; }
-
-        /* CLEAN EDITABLE TEXT STYLES (No Dashed Lines) */
+        /* Clean Editable Text */
         [contenteditable="true"] {
             outline: none;
-            border-bottom: 1px solid transparent; /* Hidden by default */
+            border-bottom: 1px solid transparent;
             cursor: text;
-            min-width: 50px;
             display: inline-block;
             white-space: nowrap;
             overflow: visible;
-            line-height: 1.5;
-            padding-bottom: 2px;
         }
         [contenteditable="true"]:focus {
-            border-bottom: 1px solid rgba(252, 211, 77, 0.5); /* Subtle gold line only when typing */
+            border-bottom: 1px solid rgba(252, 211, 77, 0.5);
             background-color: rgba(0,0,0,0.1);
         }
-
+        
         @media print {
             .no-print { display: none !important; }
-            .img-controls { display: none !important; }
-            .upload-label { display: none !important; }
             body { background-color: white; -webkit-print-color-adjust: exact; }
             #capture-frame { width: 100% !important; max-width: none !important; aspect-ratio: auto !important; height: auto !important; padding: 0 !important; box-shadow: none !important; }
         }
 
         .capturing .no-capture { display: none !important; }
-        .capturing .img-controls { display: none !important; }
-        
+        .capturing [contenteditable="true"] { border-bottom: none !important; background-color: transparent !important; }
+
         .fix-arabic-text {
             letter-spacing: normal !important;
             font-variant-ligatures: normal;
@@ -108,13 +82,6 @@
         }
     </style>
     <script>
-        const imgState = {
-            'playerImg1': { x: 0, y: 0, scale: 1 },
-            'playerImg2': { x: 0, y: 0, scale: 1 }
-        };
-        let activeImgId = null;
-        let startX = 0; let startY = 0;
-
         function changeRatio(ratio) {
             const frame = document.getElementById('capture-frame');
             frame.className = ''; 
@@ -124,66 +91,6 @@
                 document.body.style.alignItems = 'center';
             }
         }
-
-        function loadFile(event, imgId, iconId, sliderId) {
-            var image = document.getElementById(imgId);
-            var icon = document.getElementById(iconId);
-            var slider = document.getElementById(sliderId);
-            if(event.target.files && event.target.files[0]) {
-                image.src = URL.createObjectURL(event.target.files[0]);
-                image.classList.remove('hidden');
-                image.onload = function() {
-                    imgState[imgId] = { x: 0, y: 0, scale: 1 };
-                    slider.value = 1;
-                    updateTransform(imgId);
-                    if(icon) icon.style.display = 'none';
-                }
-            }
-        }
-
-        function updateTransform(imgId) {
-            const img = document.getElementById(imgId);
-            const state = imgState[imgId];
-            img.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
-        }
-
-        function handleZoom(val, imgId) {
-            imgState[imgId].scale = parseFloat(val);
-            updateTransform(imgId);
-        }
-
-        function startDrag(e, imgId) {
-            if (e.target.tagName === 'SPAN' || e.target.getAttribute('contenteditable') === 'true') return;
-            e.preventDefault();
-            activeImgId = imgId;
-            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-            startX = clientX - imgState[imgId].x;
-            startY = clientY - imgState[imgId].y;
-            document.getElementById(imgId).style.cursor = 'grabbing';
-        }
-
-        function doDrag(e) {
-            if (!activeImgId) return;
-            e.preventDefault();
-            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-            imgState[activeImgId].x = clientX - startX;
-            imgState[activeImgId].y = clientY - startY;
-            updateTransform(activeImgId);
-        }
-
-        function stopDrag() {
-            if(activeImgId) {
-                document.getElementById(activeImgId).style.cursor = 'grab';
-                activeImgId = null;
-            }
-        }
-
-        document.addEventListener('mouseup', stopDrag);
-        document.addEventListener('touchend', stopDrag);
-        document.addEventListener('mousemove', doDrag, { passive: false });
-        document.addEventListener('touchmove', doDrag, { passive: false });
 
         function downloadImage() {
             const element = document.getElementById('capture-frame');
@@ -201,14 +108,14 @@
                 scrollY: -window.scrollY
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'نهائي-كاس-النخبة.png';
+                link.download = 'النهائي.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 document.body.classList.remove('capturing');
                 btn.innerHTML = originalText;
             }).catch(err => {
                 console.error("Error:", err);
-                alert("حدث خطأ.");
+                alert("حدث خطأ أثناء الحفظ");
                 document.body.classList.remove('capturing');
                 btn.innerHTML = originalText;
             });
@@ -219,7 +126,6 @@
 
     <!-- Controls Bar -->
     <div class="fixed bottom-4 left-0 right-0 z-50 flex flex-col items-center gap-2 no-print no-capture px-4">
-        
         <!-- Size Selector -->
         <div class="bg-black/80 backdrop-blur text-white p-2 rounded-full shadow-lg flex gap-2 text-xs overflow-x-auto max-w-full border border-gray-700">
             <button onclick="changeRatio('auto')" class="px-3 py-1 rounded-full hover:bg-emerald-600 focus:bg-emerald-600 transition whitespace-nowrap">تلقائي</button>
@@ -228,11 +134,15 @@
             <button onclick="changeRatio('pc')" class="px-3 py-1 rounded-full hover:bg-emerald-600 focus:bg-emerald-600 transition whitespace-nowrap"><i class="fa-solid fa-desktop"></i> PC</button>
         </div>
 
-        <!-- Download Buttons -->
+        <!-- Action Buttons -->
         <div class="flex gap-2">
             <button id="download-btn" onclick="downloadImage()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-lg flex items-center gap-2 transition-all border border-blue-500">
                 <i class="fa-solid fa-image"></i>
                 حفظ الصورة
+            </button>
+            <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-full shadow-lg flex items-center gap-2 transition-all border border-emerald-500">
+                <i class="fa-solid fa-file-pdf"></i>
+                PDF
             </button>
         </div>
     </div>
@@ -245,7 +155,7 @@
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
 
         <div id="schedule-content">
-            
+
             <!-- Header -->
             <div class="relative z-10 px-6 pt-8 pb-4 flex justify-between items-start">
                 <div class="flex flex-col items-center w-1/4">
@@ -254,11 +164,13 @@
                     </div>
                     <span class="text-[8px] text-center text-emerald-200/80 leading-tight mt-1 fix-arabic-text">لا تجعل الكرة عبئاً عليك وألعبها للمتعة</span>
                 </div>
+
                 <div class="flex flex-col items-center w-2/4 -mt-6">
                     <div class="relative mb-1 flex justify-center items-center h-24 w-24">
-                        <i class="fa-solid fa-trophy silver-trophy"></i>
+                         <i class="fa-solid fa-trophy silver-trophy"></i>
                     </div>
                 </div>
+
                 <div class="flex flex-col items-center w-1/4">
                     <div class="w-12 h-12 rounded-full border-2 border-emerald-400/30 flex items-center justify-center mb-1 bg-emerald-900/50">
                         <i class="fa-solid fa-users text-white text-xl"></i>
@@ -267,112 +179,90 @@
                 </div>
             </div>
 
+            <!-- Title -->
             <div class="text-center px-4 mb-6 relative z-10">
-                <h1 class="text-lg font-bold text-emerald-100 mb-1 fix-arabic-text">بطولة كأس النخبه الرياضية</h1>
+                <h1 contenteditable="true" class="text-lg font-bold text-emerald-100 mb-1 fix-arabic-text">بطولة كأس النخبه الرياضية</h1>
                 <p class="text-xs md:text-sm text-emerald-300/80 font-semibold bg-emerald-900/30 inline-block px-3 py-1 rounded-full border border-emerald-800 fix-arabic-text">
                     برعاية جمعية بناء وتنمية مساكن بمنطقة جازان
                 </p>
-                <h2 class="text-4xl font-black text-white mt-4 drop-shadow-lg fix-arabic-text">المباراة النهائية</h2>
+                <h2 contenteditable="true" class="text-4xl font-black text-white mt-4 drop-shadow-lg fix-arabic-text">النهائي</h2>
             </div>
 
+            <!-- Date Strip -->
             <div class="bg-[#064e3b] py-2 text-center border-y border-emerald-800 mb-8 relative z-10 shadow-md mx-4 rounded">
-                <h3 class="text-xl font-bold text-emerald-50 fix-arabic-text">الثلاثاء 9 ديسمبر</h3>
+                <h3 contenteditable="true" class="text-xl font-bold text-emerald-50 fix-arabic-text">الثلاثاء 9 ديسمبر</h3>
             </div>
 
-            <!-- Match Area -->
+            <!-- Matches List -->
             <div class="px-4 space-y-4 mb-8 relative z-10">
                 
-                <!-- Helper text removed for cleaner look as requested -->
-
-                <!-- Card -->
-                <div class="bg-gradient-to-b from-[#065f46] to-[#022c22] rounded-lg p-2 flex items-end justify-between border border-emerald-500/50 h-64 shadow-2xl relative overflow-hidden group">
-                    
-                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
-
-                    <!-- RIGHT Player -->
-                    <div class="flex flex-col items-center justify-end w-[35%] text-center z-10 h-full pb-3 relative player-container group/edit">
-                        <div class="img-controls absolute top-0 left-0 right-0 z-30 flex flex-col items-center pt-2">
-                            <label for="upload1" class="cursor-pointer bg-black/60 hover:bg-black/80 text-white rounded-full px-2 py-1 mb-1 backdrop-blur-sm border border-white/20 shadow upload-label">
-                                <i class="fa-solid fa-camera text-xs"></i> <span class="text-[8px] fix-arabic-text">صورة</span>
-                            </label>
-                            <input type="range" id="zoom1" min="0.5" max="3" step="0.1" value="1" class="w-16 h-1 bg-gray-400 rounded-lg appearance-none cursor-pointer" oninput="handleZoom(this.value, 'playerImg1')">
-                        </div>
-                        <input type="file" accept="image/*" id="upload1" class="hidden" onchange="loadFile(event, 'playerImg1', 'placeholder1', 'zoom1')">
-                        <div class="player-mask mb-1">
-                            <i id="placeholder1" class="fa-solid fa-user-tie text-6xl text-emerald-500/30 absolute bottom-10 pointer-events-none"></i>
-                            <img id="playerImg1" src="" class="h-40 w-auto hidden player-img" alt="لاعب" onmousedown="startDrag(event, 'playerImg1')" ontouchstart="startDrag(event, 'playerImg1')">
-                        </div>
-                        
-                        <!-- Name Box -->
-                        <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-3 py-2 rounded w-full shadow-lg z-20 relative hover:bg-[#064e3b] min-h-[40px] flex items-center justify-center">
-                            <span contenteditable="true" class="block font-black text-white text-lg leading-relaxed fix-arabic-text w-full" dir="rtl">البلانكو</span>
-                        </div>
+                <!-- Match 1 -->
+                <div class="bg-[#065f46] rounded-lg p-4 flex items-center justify-between border border-emerald-700 h-24 shadow-lg hover:bg-[#065f46]/80 transition">
+                    <div class="flex items-center justify-center w-[37.5%] text-center">
+                        <span contenteditable="true" class="font-black text-white text-xl md:text-2xl tracking-wide drop-shadow-md leading-tight fix-arabic-text" dir="rtl">دفشي</span>
                     </div>
 
-                    <!-- VS Center -->
-                    <div class="flex flex-col items-center justify-center w-[24%] h-full z-10 pb-4">
-                        <!-- Crown removed -->
-                        
-                        <!-- Time Box -->
-                        <div class="bg-[#064e3b] px-2 py-3 rounded-lg text-center w-full border border-emerald-400/50 shadow-lg shadow-emerald-900/50 mb-2 min-h-[60px] flex flex-col justify-center">
-                            <span class="block text-[8px] text-emerald-200 font-bold mb-1 fix-arabic-text">مساءً</span>
-                            <span contenteditable="true" class="text-2xl font-black text-white font-mono leading-none block whitespace-nowrap w-full" dir="ltr">10:00</span>
-                        </div>
-                        <span class="text-[10px] text-emerald-300/80 font-bold">VS</span>
+                    <div class="bg-[#064e3b] px-3 py-2 rounded text-center w-[25%] border border-emerald-600 shadow-inner">
+                        <span class="block text-[10px] text-emerald-300/70 mb-1 fix-arabic-text">مساءً</span>
+                        <span contenteditable="true" class="text-2xl font-black text-white font-mono" dir="ltr">9:00</span>
                     </div>
 
-                    <!-- LEFT Player -->
-                    <div class="flex flex-col items-center justify-end w-[35%] text-center z-10 h-full pb-3 relative player-container group/edit">
-                        <div class="img-controls absolute top-0 left-0 right-0 z-30 flex flex-col items-center pt-2">
-                            <label for="upload2" class="cursor-pointer bg-black/60 hover:bg-black/80 text-white rounded-full px-2 py-1 mb-1 backdrop-blur-sm border border-white/20 shadow upload-label">
-                                <i class="fa-solid fa-camera text-xs"></i> <span class="text-[8px] fix-arabic-text">صورة</span>
-                            </label>
-                            <input type="range" id="zoom2" min="0.5" max="3" step="0.1" value="1" class="w-16 h-1 bg-gray-400 rounded-lg appearance-none cursor-pointer" oninput="handleZoom(this.value, 'playerImg2')">
-                        </div>
-                        <input type="file" accept="image/*" id="upload2" class="hidden" onchange="loadFile(event, 'playerImg2', 'placeholder2', 'zoom2')">
-                        <div class="player-mask mb-1">
-                            <i id="placeholder2" class="fa-solid fa-user-tie text-6xl text-emerald-500/30 absolute bottom-10 pointer-events-none"></i>
-                            <img id="playerImg2" src="" class="h-40 w-auto hidden player-img" alt="لاعب" onmousedown="startDrag(event, 'playerImg2')" ontouchstart="startDrag(event, 'playerImg2')">
-                        </div>
-                        
-                        <!-- Name Box -->
-                        <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-3 py-2 rounded w-full shadow-lg z-20 relative hover:bg-[#064e3b] min-h-[40px] flex items-center justify-center">
-                            <span contenteditable="true" class="block font-black text-white text-lg leading-relaxed fix-arabic-text w-full" dir="rtl">سما جازان</span>
-                        </div>
+                    <div class="flex items-center justify-center w-[37.5%] text-center">
+                        <span contenteditable="true" class="font-black text-white text-xl md:text-2xl tracking-wide drop-shadow-md leading-tight fix-arabic-text" dir="rtl">حمدي</span>
                     </div>
-
                 </div>
+
+                <!-- Match 2 -->
+                <div class="bg-[#065f46] rounded-lg p-4 flex items-center justify-between border border-emerald-700 h-24 shadow-lg hover:bg-[#065f46]/80 transition">
+                    <div class="flex items-center justify-center w-[37.5%] text-center">
+                        <span contenteditable="true" class="font-black text-white text-xl md:text-2xl tracking-wide drop-shadow-md leading-tight fix-arabic-text" dir="rtl">البلانكو</span>
+                    </div>
+
+                    <div class="bg-[#064e3b] px-3 py-2 rounded text-center w-[25%] border border-emerald-600 shadow-inner">
+                        <span class="block text-[10px] text-emerald-300/70 mb-1 fix-arabic-text">مساءً</span>
+                        <span contenteditable="true" class="text-2xl font-black text-white font-mono" dir="ltr">10:00</span>
+                    </div>
+
+                    <div class="flex items-center justify-center w-[37.5%] text-center">
+                        <span contenteditable="true" class="font-black text-white text-xl md:text-2xl tracking-wide drop-shadow-md leading-tight fix-arabic-text" dir="rtl">سما جازان</span>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Info Grid -->
+            <!-- Footer Info -->
             <div class="grid grid-cols-2 gap-4 px-4 relative z-10 text-xs h-32">
+                
                 <div class="glass-panel rounded-lg p-2 flex flex-col justify-start items-center text-center shadow-md border-t-2 border-emerald-500 h-full">
                     <div class="flex items-center gap-2 mb-2 border-b border-emerald-600/30 pb-1 w-full justify-center shrink-0">
                         <i class="fa-solid fa-location-dot text-emerald-400"></i>
-                        <span class="text-[10px] text-emerald-100 font-bold fix-arabic-text">موقع النهائي</span>
+                        <span contenteditable="true" class="text-[10px] text-emerald-100 font-bold fix-arabic-text">موقع الملعب</span>
                     </div>
                     <div class="w-full flex-1 flex items-center justify-center">
                         <div class="flex justify-center items-center px-2 bg-emerald-900/40 rounded py-2 w-full h-full">
-                            <span class="text-[12px] text-white font-bold fix-arabic-text">ملعب المعبوج - جازان</span>
+                            <span contenteditable="true" class="text-[12px] text-white font-bold fix-arabic-text">ملعب المعبوج - جازان</span>
                         </div>
                     </div>
                 </div>
+
                 <div class="glass-panel rounded-lg p-2 flex flex-col justify-start items-center text-center shadow-md border-t-2 border-emerald-500 h-full">
                     <div class="flex items-center gap-2 mb-2 border-b border-emerald-600/30 pb-1 w-full justify-center shrink-0">
-                        <i class="fa-solid fa-users-gear text-emerald-400"></i>
+                         <i class="fa-solid fa-users-gear text-emerald-400"></i>
                         <span class="text-[10px] text-emerald-100 font-bold fix-arabic-text">منظم البطولة للتواصل</span>
                     </div>
+                    
                     <div class="w-full space-y-2 flex-1 flex flex-col justify-center">
                         <div class="flex flex-col justify-center items-center px-2 bg-emerald-900/40 rounded py-1">
-                            <span class="text-[10px] text-white font-bold mb-0.5 fix-arabic-text">عبده قاسم</span>
-                            <span class="text-[11px] text-emerald-300 font-mono dir-ltr tracking-wider font-bold">0556792173</span>
+                            <span contenteditable="true" class="text-[10px] text-white font-bold mb-0.5 fix-arabic-text">عبده قاسم</span>
+                            <span contenteditable="true" class="text-[11px] text-emerald-300 font-mono dir-ltr tracking-wider font-bold">0556792173</span>
                         </div>
                         <div class="flex flex-col justify-center items-center px-2 bg-emerald-900/40 rounded py-1">
-                            <span class="text-[10px] text-white font-bold mb-0.5 fix-arabic-text">أحمد جني</span>
-                            <span class="text-[11px] text-emerald-300 font-mono dir-ltr tracking-wider font-bold">0536440024</span>
+                            <span contenteditable="true" class="text-[10px] text-white font-bold mb-0.5 fix-arabic-text">أحمد جني</span>
+                            <span contenteditable="true" class="text-[11px] text-emerald-300 font-mono dir-ltr tracking-wider font-bold">0536440024</span>
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
@@ -380,6 +270,5 @@
 
 </body>
 </html>
-
 
 
