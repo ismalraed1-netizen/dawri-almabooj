@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نهائي كأس النخبة - تحكم كامل</title>
+    <title>نهائي كأس النخبة - إصلاح النص العربي</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
             font-family: 'Cairo', sans-serif;
             background-color: #022c22; /* Dark Emerald */
             color: white;
-            user-select: none; /* Prevent text selection while dragging */
+            user-select: none;
         }
         .volta-gradient {
             background: linear-gradient(180deg, #022c22 0%, #064e3b 50%, #022c22 100%);
@@ -24,7 +24,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* Silver Trophy Effect */
         .silver-trophy {
             background: linear-gradient(to bottom, #e2e8f0 0%, #94a3b8 50%, #475569 100%);
             -webkit-background-clip: text;
@@ -33,7 +32,6 @@
             font-size: 5rem; 
         }
 
-        /* Player Mask & Image Styles */
         .player-mask {
             overflow: hidden;
             position: relative;
@@ -43,14 +41,11 @@
             justify-content: center;
             align-items: flex-end;
             border-radius: 0.5rem 0.5rem 0 0;
-            /* Debug border to see area */
-            /* border: 1px dashed rgba(255,255,255,0.1); */
         }
 
         .player-img {
-            position: relative; /* Changed from object-fit to allow transform */
-            max-width: none; /* Allow image to exceed container width */
-            /* Initial state handled by JS */
+            position: relative;
+            max-width: none;
             cursor: grab;
             filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
             transform-origin: center bottom;
@@ -61,7 +56,6 @@
             cursor: grabbing;
         }
 
-        /* Controls */
         .img-controls {
             opacity: 0; 
             transition: opacity 0.3s;
@@ -70,7 +64,6 @@
             opacity: 1;
         }
         
-        /* Range Slider Styling */
         input[type=range] {
             -webkit-appearance: none; 
             background: transparent; 
@@ -93,7 +86,6 @@
             border-radius: 2px;
         }
 
-        /* Hide elements during capture/print */
         @media print {
             .no-print { display: none !important; }
             .img-controls { display: none !important; }
@@ -107,9 +99,16 @@
         .capturing .img-controls {
             display: none !important;
         }
+        
+        /* Fix for Arabic Text in HTML2Canvas */
+        .fix-arabic-text {
+            letter-spacing: normal !important; /* Critical fix */
+            font-variant-ligatures: normal;
+            direction: rtl;
+            unicode-bidi: isolate;
+        }
     </style>
     <script>
-        // Store state for each image
         const imgState = {
             'playerImg1': { x: 0, y: 0, scale: 1 },
             'playerImg2': { x: 0, y: 0, scale: 1 }
@@ -128,11 +127,9 @@
                 image.src = URL.createObjectURL(event.target.files[0]);
                 image.classList.remove('hidden');
                 image.onload = function() {
-                    // Reset position when loading new image
                     imgState[imgId] = { x: 0, y: 0, scale: 1 };
                     slider.value = 1;
                     updateTransform(imgId);
-                    // Hide placeholder
                     if(icon) icon.style.display = 'none';
                 }
             }
@@ -149,9 +146,8 @@
             updateTransform(imgId);
         }
 
-        // Drag Logic
         function startDrag(e, imgId) {
-            e.preventDefault(); // Prevent default drag behavior
+            e.preventDefault();
             activeImgId = imgId;
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
             const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
@@ -178,12 +174,10 @@
             }
         }
 
-        // Add global listeners for drag release (so it works even if mouse leaves image)
         document.addEventListener('mouseup', stopDrag);
         document.addEventListener('touchend', stopDrag);
         document.addEventListener('mousemove', doDrag, { passive: false });
         document.addEventListener('touchmove', doDrag, { passive: false });
-
 
         function downloadImage() {
             const element = document.getElementById('schedule-card');
@@ -197,7 +191,8 @@
                 scale: 3, 
                 backgroundColor: null, 
                 useCORS: true,
-                allowTaint: true
+                allowTaint: true,
+                scrollY: -window.scrollY // Fix for potential scroll issues
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'نهائي-كاس-النخبة.png';
@@ -239,7 +234,7 @@
                 <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center mb-1 shadow-lg shadow-emerald-900/50">
                     <i class="fa-solid fa-futbol text-emerald-900 text-2xl"></i>
                 </div>
-                <span class="text-[8px] text-center text-emerald-200/80 leading-tight mt-1">لا تجعل الكرة عبئاً عليك وألعبها للمتعة</span>
+                <span class="text-[8px] text-center text-emerald-200/80 leading-tight mt-1 fix-arabic-text">لا تجعل الكرة عبئاً عليك وألعبها للمتعة</span>
             </div>
             <div class="flex flex-col items-center w-2/4 -mt-6">
                 <div class="relative mb-1 flex justify-center items-center h-24 w-24">
@@ -250,27 +245,27 @@
                 <div class="w-12 h-12 rounded-full border-2 border-emerald-400/30 flex items-center justify-center mb-1 bg-emerald-900/50">
                     <i class="fa-solid fa-users text-white text-xl"></i>
                 </div>
-                <span class="text-[8px] text-center text-emerald-200/80 leading-tight mt-1">جمعية بناء وتنمية مساكن</span>
+                <span class="text-[8px] text-center text-emerald-200/80 leading-tight mt-1 fix-arabic-text">جمعية بناء وتنمية مساكن</span>
             </div>
         </div>
 
         <div class="text-center px-4 mb-6 relative z-10">
-            <h1 class="text-lg font-bold text-emerald-100 mb-1">بطولة كأس النخبه الرياضية</h1>
-            <p class="text-xs md:text-sm text-emerald-300/80 font-semibold bg-emerald-900/30 inline-block px-3 py-1 rounded-full border border-emerald-800">
+            <h1 class="text-lg font-bold text-emerald-100 mb-1 fix-arabic-text">بطولة كأس النخبه الرياضية</h1>
+            <p class="text-xs md:text-sm text-emerald-300/80 font-semibold bg-emerald-900/30 inline-block px-3 py-1 rounded-full border border-emerald-800 fix-arabic-text">
                 برعاية جمعية بناء وتنمية مساكن بمنطقة جازان
             </p>
-            <h2 class="text-4xl font-black text-white mt-4 drop-shadow-lg">المباراة النهائية</h2>
+            <h2 class="text-4xl font-black text-white mt-4 drop-shadow-lg fix-arabic-text">المباراة النهائية</h2>
         </div>
 
         <div class="bg-[#064e3b] py-2 text-center border-y border-emerald-800 mb-8 relative z-10 shadow-md mx-4 rounded">
-            <h3 class="text-xl font-bold text-emerald-50">الثلاثاء 9 ديسمبر</h3>
+            <h3 class="text-xl font-bold text-emerald-50 fix-arabic-text">الثلاثاء 9 ديسمبر</h3>
         </div>
 
         <!-- Match Area -->
         <div class="px-4 space-y-4 mb-8 relative z-10">
             
             <div class="no-print no-capture text-center mb-2 bg-emerald-900/50 py-1 rounded border border-emerald-800/50">
-                <p class="text-[10px] text-yellow-300">
+                <p class="text-[10px] text-yellow-300 fix-arabic-text">
                     <i class="fa-solid fa-arrows-up-down-left-right"></i> حرك الصورة باللمس/الماوس | <i class="fa-solid fa-magnifying-glass-plus"></i> كبّر من الشريط
                 </p>
             </div>
@@ -283,16 +278,14 @@
                 <!-- RIGHT Player Container -->
                 <div class="flex flex-col items-center justify-end w-[35%] text-center z-10 h-full pb-3 relative player-container group/edit">
                     
-                    <!-- Controls (Zoom & Upload) -->
                     <div class="img-controls absolute top-0 left-0 right-0 z-30 flex flex-col items-center pt-2">
                         <label for="upload1" class="cursor-pointer bg-black/60 hover:bg-black/80 text-white rounded-full px-2 py-1 mb-1 backdrop-blur-sm border border-white/20 shadow upload-label">
-                            <i class="fa-solid fa-camera text-xs"></i> <span class="text-[8px]">صورة</span>
+                            <i class="fa-solid fa-camera text-xs"></i> <span class="text-[8px] fix-arabic-text">صورة</span>
                         </label>
                         <input type="range" id="zoom1" min="0.5" max="3" step="0.1" value="1" class="w-16 h-1 bg-gray-400 rounded-lg appearance-none cursor-pointer" oninput="handleZoom(this.value, 'playerImg1')">
                     </div>
                     <input type="file" accept="image/*" id="upload1" class="hidden" onchange="loadFile(event, 'playerImg1', 'placeholder1', 'zoom1')">
 
-                    <!-- Image Mask Area -->
                     <div class="player-mask mb-1">
                         <i id="placeholder1" class="fa-solid fa-user-tie text-6xl text-emerald-500/30 absolute bottom-10 pointer-events-none"></i>
                         <img id="playerImg1" src="" class="h-40 w-auto hidden player-img" alt="لاعب" 
@@ -300,9 +293,9 @@
                              ontouchstart="startDrag(event, 'playerImg1')">
                     </div>
 
-                    <!-- Name -->
                     <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-2 py-1 rounded w-full shadow-lg z-20 relative">
-                        <span class="block font-black text-white text-lg tracking-wide leading-tight">البلانكو</span>
+                        <!-- Added explicit styling to fix Arabic scrambling -->
+                        <span class="block font-black text-white text-lg leading-tight fix-arabic-text" dir="rtl">البلانكو</span>
                     </div>
                 </div>
 
@@ -312,7 +305,7 @@
                         <i class="fa-solid fa-crown text-yellow-400 text-2xl animate-pulse"></i>
                     </div>
                     <div class="bg-[#064e3b] px-1 py-2 rounded-lg text-center w-full border border-emerald-400/50 shadow-lg shadow-emerald-900/50 mb-2">
-                        <span class="block text-[8px] text-emerald-200 font-bold mb-0.5">مساءً</span>
+                        <span class="block text-[8px] text-emerald-200 font-bold mb-0.5 fix-arabic-text">مساءً</span>
                         <span class="text-2xl font-black text-white font-mono leading-none">10:00</span>
                     </div>
                     <span class="text-[10px] text-emerald-300/80 font-bold">VS</span>
@@ -321,16 +314,14 @@
                 <!-- LEFT Player Container -->
                 <div class="flex flex-col items-center justify-end w-[35%] text-center z-10 h-full pb-3 relative player-container group/edit">
                     
-                    <!-- Controls -->
                     <div class="img-controls absolute top-0 left-0 right-0 z-30 flex flex-col items-center pt-2">
                         <label for="upload2" class="cursor-pointer bg-black/60 hover:bg-black/80 text-white rounded-full px-2 py-1 mb-1 backdrop-blur-sm border border-white/20 shadow upload-label">
-                            <i class="fa-solid fa-camera text-xs"></i> <span class="text-[8px]">صورة</span>
+                            <i class="fa-solid fa-camera text-xs"></i> <span class="text-[8px] fix-arabic-text">صورة</span>
                         </label>
                         <input type="range" id="zoom2" min="0.5" max="3" step="0.1" value="1" class="w-16 h-1 bg-gray-400 rounded-lg appearance-none cursor-pointer" oninput="handleZoom(this.value, 'playerImg2')">
                     </div>
                     <input type="file" accept="image/*" id="upload2" class="hidden" onchange="loadFile(event, 'playerImg2', 'placeholder2', 'zoom2')">
 
-                    <!-- Image Mask Area -->
                     <div class="player-mask mb-1">
                         <i id="placeholder2" class="fa-solid fa-user-tie text-6xl text-emerald-500/30 absolute bottom-10 pointer-events-none"></i>
                         <img id="playerImg2" src="" class="h-40 w-auto hidden player-img" alt="لاعب"
@@ -338,9 +329,9 @@
                              ontouchstart="startDrag(event, 'playerImg2')">
                     </div>
 
-                    <!-- Name -->
                     <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-2 py-1 rounded w-full shadow-lg z-20 relative">
-                        <span class="block font-black text-white text-lg tracking-wide leading-tight">سما جازان</span>
+                        <!-- Added explicit styling to fix Arabic scrambling -->
+                        <span class="block font-black text-white text-lg leading-tight fix-arabic-text" dir="rtl">سما جازان</span>
                     </div>
                 </div>
 
@@ -353,26 +344,26 @@
             <div class="glass-panel rounded-lg p-2 flex flex-col justify-start items-center text-center shadow-md border-t-2 border-emerald-500 h-full">
                 <div class="flex items-center gap-2 mb-2 border-b border-emerald-600/30 pb-1 w-full justify-center shrink-0">
                     <i class="fa-solid fa-location-dot text-emerald-400"></i>
-                    <span class="text-[10px] text-emerald-100 font-bold">موقع النهائي</span>
+                    <span class="text-[10px] text-emerald-100 font-bold fix-arabic-text">موقع النهائي</span>
                 </div>
                 <div class="w-full flex-1 flex items-center justify-center">
                     <div class="flex justify-center items-center px-2 bg-emerald-900/40 rounded py-2 w-full h-full">
-                        <span class="text-[12px] text-white font-bold">ملعب المعبوج - جازان</span>
+                        <span class="text-[12px] text-white font-bold fix-arabic-text">ملعب المعبوج - جازان</span>
                     </div>
                 </div>
             </div>
             <div class="glass-panel rounded-lg p-2 flex flex-col justify-start items-center text-center shadow-md border-t-2 border-emerald-500 h-full">
                 <div class="flex items-center gap-2 mb-2 border-b border-emerald-600/30 pb-1 w-full justify-center shrink-0">
                      <i class="fa-solid fa-users-gear text-emerald-400"></i>
-                    <span class="text-[10px] text-emerald-100 font-bold">منظم البطولة للتواصل</span>
+                    <span class="text-[10px] text-emerald-100 font-bold fix-arabic-text">منظم البطولة للتواصل</span>
                 </div>
                 <div class="w-full space-y-2 flex-1 flex flex-col justify-center">
                     <div class="flex flex-col justify-center items-center px-2 bg-emerald-900/40 rounded py-1">
-                        <span class="text-[10px] text-white font-bold mb-0.5">عبده قاسم</span>
+                        <span class="text-[10px] text-white font-bold mb-0.5 fix-arabic-text">عبده قاسم</span>
                         <span class="text-[11px] text-emerald-300 font-mono dir-ltr tracking-wider font-bold">0556792173</span>
                     </div>
                     <div class="flex flex-col justify-center items-center px-2 bg-emerald-900/40 rounded py-1">
-                        <span class="text-[10px] text-white font-bold mb-0.5">أحمد جني</span>
+                        <span class="text-[10px] text-white font-bold mb-0.5 fix-arabic-text">أحمد جني</span>
                         <span class="text-[11px] text-emerald-300 font-mono dir-ltr tracking-wider font-bold">0536440024</span>
                     </div>
                 </div>
