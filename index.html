@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نهائي كأس النخبة - إصلاح القص</title>
+    <title>نهائي كأس النخبة - تصميم نظيف</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -72,35 +72,33 @@
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 12px; width: 12px; border-radius: 50%; background: #fcd34d; cursor: pointer; margin-top: -4px; box-shadow: 0 0 4px rgba(0,0,0,0.5); }
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255,255,255,0.3); border-radius: 2px; }
 
-        /* FIXED TEXT STYLES */
+        /* CLEAN EDITABLE TEXT STYLES (No Dashed Lines) */
         [contenteditable="true"] {
             outline: none;
-            border-bottom: 1px dashed rgba(255,255,255,0.3);
+            border-bottom: 1px solid transparent; /* Hidden by default */
             cursor: text;
             min-width: 50px;
             display: inline-block;
             white-space: nowrap;
-            overflow: visible; /* Changed from hidden to visible to prevent clipping */
-            line-height: 1.5; /* Increased line height */
-            padding-bottom: 2px; /* Extra padding */
+            overflow: visible;
+            line-height: 1.5;
+            padding-bottom: 2px;
         }
         [contenteditable="true"]:focus {
-            border-bottom: 1px solid #fcd34d;
-            background-color: rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(252, 211, 77, 0.5); /* Subtle gold line only when typing */
+            background-color: rgba(0,0,0,0.1);
         }
 
         @media print {
             .no-print { display: none !important; }
             .img-controls { display: none !important; }
             .upload-label { display: none !important; }
-            [contenteditable="true"] { border-bottom: none !important; }
             body { background-color: white; -webkit-print-color-adjust: exact; }
             #capture-frame { width: 100% !important; max-width: none !important; aspect-ratio: auto !important; height: auto !important; padding: 0 !important; box-shadow: none !important; }
         }
 
         .capturing .no-capture { display: none !important; }
         .capturing .img-controls { display: none !important; }
-        .capturing [contenteditable="true"] { border-bottom: none !important; background-color: transparent !important; }
         
         .fix-arabic-text {
             letter-spacing: normal !important;
@@ -284,11 +282,7 @@
             <!-- Match Area -->
             <div class="px-4 space-y-4 mb-8 relative z-10">
                 
-                <div class="no-print no-capture text-center mb-2 bg-emerald-900/50 py-1 rounded border border-emerald-800/50">
-                    <p class="text-[10px] text-yellow-300 fix-arabic-text">
-                        <i class="fa-solid fa-pen"></i> اضغط للتعديل | <i class="fa-solid fa-up-right-and-down-left-from-center"></i> اختر المقاس بالأسفل
-                    </p>
-                </div>
+                <!-- Helper text removed for cleaner look as requested -->
 
                 <!-- Card -->
                 <div class="bg-gradient-to-b from-[#065f46] to-[#022c22] rounded-lg p-2 flex items-end justify-between border border-emerald-500/50 h-64 shadow-2xl relative overflow-hidden group">
@@ -309,7 +303,7 @@
                             <img id="playerImg1" src="" class="h-40 w-auto hidden player-img" alt="لاعب" onmousedown="startDrag(event, 'playerImg1')" ontouchstart="startDrag(event, 'playerImg1')">
                         </div>
                         
-                        <!-- Name Box - Increased Padding and Height -->
+                        <!-- Name Box -->
                         <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-3 py-2 rounded w-full shadow-lg z-20 relative hover:bg-[#064e3b] min-h-[40px] flex items-center justify-center">
                             <span contenteditable="true" class="block font-black text-white text-lg leading-relaxed fix-arabic-text w-full" dir="rtl">البلانكو</span>
                         </div>
@@ -317,11 +311,9 @@
 
                     <!-- VS Center -->
                     <div class="flex flex-col items-center justify-center w-[24%] h-full z-10 pb-4">
-                        <div class="mb-auto mt-8">
-                            <i class="fa-solid fa-crown text-yellow-400 text-2xl animate-pulse"></i>
-                        </div>
+                        <!-- Crown removed -->
                         
-                        <!-- Time Box - Increased Padding and Height -->
+                        <!-- Time Box -->
                         <div class="bg-[#064e3b] px-2 py-3 rounded-lg text-center w-full border border-emerald-400/50 shadow-lg shadow-emerald-900/50 mb-2 min-h-[60px] flex flex-col justify-center">
                             <span class="block text-[8px] text-emerald-200 font-bold mb-1 fix-arabic-text">مساءً</span>
                             <span contenteditable="true" class="text-2xl font-black text-white font-mono leading-none block whitespace-nowrap w-full" dir="ltr">10:00</span>
@@ -343,7 +335,7 @@
                             <img id="playerImg2" src="" class="h-40 w-auto hidden player-img" alt="لاعب" onmousedown="startDrag(event, 'playerImg2')" ontouchstart="startDrag(event, 'playerImg2')">
                         </div>
                         
-                        <!-- Name Box - Increased Padding and Height -->
+                        <!-- Name Box -->
                         <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-3 py-2 rounded w-full shadow-lg z-20 relative hover:bg-[#064e3b] min-h-[40px] flex items-center justify-center">
                             <span contenteditable="true" class="block font-black text-white text-lg leading-relaxed fix-arabic-text w-full" dir="rtl">سما جازان</span>
                         </div>
@@ -388,5 +380,6 @@
 
 </body>
 </html>
+
 
 
