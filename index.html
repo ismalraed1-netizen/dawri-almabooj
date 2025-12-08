@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نهائي كأس النخبة - إصلاح النص العربي</title>
+    <title>نهائي كأس النخبة - إصلاح الوقت</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -86,10 +86,26 @@
             border-radius: 2px;
         }
 
+        /* Editable Text Styling */
+        [contenteditable="true"] {
+            outline: none;
+            border-bottom: 1px dashed rgba(255,255,255,0.3);
+            cursor: text;
+            min-width: 50px;
+            display: inline-block;
+            white-space: nowrap; /* Prevents wrapping */
+            overflow: hidden;
+        }
+        [contenteditable="true"]:focus {
+            border-bottom: 1px solid #fcd34d;
+            background-color: rgba(0,0,0,0.2);
+        }
+
         @media print {
             .no-print { display: none !important; }
             .img-controls { display: none !important; }
             .upload-label { display: none !important; }
+            [contenteditable="true"] { border-bottom: none !important; }
             body { -webkit-print-color-adjust: exact; }
         }
 
@@ -99,10 +115,13 @@
         .capturing .img-controls {
             display: none !important;
         }
+        .capturing [contenteditable="true"] {
+            border-bottom: none !important;
+            background-color: transparent !important;
+        }
         
-        /* Fix for Arabic Text in HTML2Canvas */
         .fix-arabic-text {
-            letter-spacing: normal !important; /* Critical fix */
+            letter-spacing: normal !important;
             font-variant-ligatures: normal;
             direction: rtl;
             unicode-bidi: isolate;
@@ -147,6 +166,7 @@
         }
 
         function startDrag(e, imgId) {
+            if (e.target.tagName === 'SPAN' || e.target.getAttribute('contenteditable') === 'true') return;
             e.preventDefault();
             activeImgId = imgId;
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
@@ -192,7 +212,7 @@
                 backgroundColor: null, 
                 useCORS: true,
                 allowTaint: true,
-                scrollY: -window.scrollY // Fix for potential scroll issues
+                scrollY: -window.scrollY 
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'نهائي-كاس-النخبة.png';
@@ -266,7 +286,7 @@
             
             <div class="no-print no-capture text-center mb-2 bg-emerald-900/50 py-1 rounded border border-emerald-800/50">
                 <p class="text-[10px] text-yellow-300 fix-arabic-text">
-                    <i class="fa-solid fa-arrows-up-down-left-right"></i> حرك الصورة باللمس/الماوس | <i class="fa-solid fa-magnifying-glass-plus"></i> كبّر من الشريط
+                    <i class="fa-solid fa-pen"></i> اضغط على الأسماء والوقت للتعديل | <i class="fa-solid fa-arrows-up-down-left-right"></i> حرك الصورة
                 </p>
             </div>
 
@@ -293,26 +313,26 @@
                              ontouchstart="startDrag(event, 'playerImg1')">
                     </div>
 
-                    <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-2 py-1 rounded w-full shadow-lg z-20 relative">
-                        <!-- Added explicit styling to fix Arabic scrambling -->
-                        <span class="block font-black text-white text-lg leading-tight fix-arabic-text" dir="rtl">البلانكو</span>
+                    <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-2 py-1 rounded w-full shadow-lg z-20 relative hover:bg-[#064e3b]">
+                        <span contenteditable="true" class="block font-black text-white text-lg leading-tight fix-arabic-text" dir="rtl">البلانكو</span>
                     </div>
                 </div>
 
-                <!-- VS Center -->
-                <div class="flex flex-col items-center justify-center w-[20%] h-full z-10 pb-4">
+                <!-- VS Center (Expanded Width) -->
+                <div class="flex flex-col items-center justify-center w-[24%] h-full z-10 pb-4">
                     <div class="mb-auto mt-8">
                         <i class="fa-solid fa-crown text-yellow-400 text-2xl animate-pulse"></i>
                     </div>
                     <div class="bg-[#064e3b] px-1 py-2 rounded-lg text-center w-full border border-emerald-400/50 shadow-lg shadow-emerald-900/50 mb-2">
                         <span class="block text-[8px] text-emerald-200 font-bold mb-0.5 fix-arabic-text">مساءً</span>
-                        <span class="text-2xl font-black text-white font-mono leading-none">10:00</span>
+                        <!-- Editable Time with No Wrap -->
+                        <span contenteditable="true" class="text-2xl font-black text-white font-mono leading-none block whitespace-nowrap" dir="ltr">10:00</span>
                     </div>
                     <span class="text-[10px] text-emerald-300/80 font-bold">VS</span>
                 </div>
 
                 <!-- LEFT Player Container -->
-                <div class="flex flex-col items-center justify-end w-[35%] text-center z-10 h-full pb-3 relative player-container group/edit">
+                <div class="flex flex-col items-center justify-end w-[38%] text-center z-10 h-full pb-3 relative player-container group/edit">
                     
                     <div class="img-controls absolute top-0 left-0 right-0 z-30 flex flex-col items-center pt-2">
                         <label for="upload2" class="cursor-pointer bg-black/60 hover:bg-black/80 text-white rounded-full px-2 py-1 mb-1 backdrop-blur-sm border border-white/20 shadow upload-label">
@@ -329,9 +349,8 @@
                              ontouchstart="startDrag(event, 'playerImg2')">
                     </div>
 
-                    <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-2 py-1 rounded w-full shadow-lg z-20 relative">
-                        <!-- Added explicit styling to fix Arabic scrambling -->
-                        <span class="block font-black text-white text-lg leading-tight fix-arabic-text" dir="rtl">سما جازان</span>
+                    <div class="bg-[#064e3b]/90 border border-emerald-400/30 px-2 py-1 rounded w-full shadow-lg z-20 relative hover:bg-[#064e3b]">
+                        <span contenteditable="true" class="block font-black text-white text-lg leading-tight fix-arabic-text" dir="rtl">سما جازان</span>
                     </div>
                 </div>
 
