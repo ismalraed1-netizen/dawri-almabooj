@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بطاقة تعزية - هوية بناء وتنمية</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -35,7 +36,7 @@
             position: relative;
             overflow: hidden;
             display: flex;
-            flex-col: column;
+            flex-direction: column;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         /* Graphic Waves simulating the brand identity */
@@ -55,10 +56,10 @@
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="flex flex-col items-center justify-center min-h-screen p-4 gap-4">
 
     <!-- Card Wrapper (Fixed Size for high quality screenshot) -->
-    <div class="card-container flex flex-col items-center text-center pt-16 pb-0 relative">
+    <div id="capture-target" class="card-container flex flex-col items-center text-center pt-16 pb-0 relative">
         
         <!-- Top Decoration (Optional minimal strip) -->
         <div class="absolute top-0 w-full h-2 bg-brandGreen"></div>
@@ -121,6 +122,14 @@
         </div>
     </div>
 
+    <!-- Download Button -->
+    <button onclick="downloadImage()" class="px-8 py-3 bg-brandGreen text-white rounded-full font-bold shadow-lg hover:bg-green-600 transition-colors flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        حفظ الصورة للتويتر
+    </button>
+
     <script>
         function loadLogo(event) {
             const file = event.target.files[0];
@@ -132,8 +141,38 @@
                 reader.readAsDataURL(file);
             }
         }
+
+        function downloadImage() {
+            const element = document.getElementById("capture-target");
+            
+            // Show loading state or feedback if desired
+            const btn = document.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerText = "جاري الحفظ...";
+
+            html2canvas(element, {
+                scale: 1, // High quality scale
+                useCORS: true, // Try to handle cross-origin images
+                backgroundColor: "#ffffff",
+                width: 1080,
+                height: 1080,
+                windowWidth: 1080,
+                windowHeight: 1080
+            }).then(canvas => {
+                // Create an image link
+                const link = document.createElement('a');
+                link.download = 'condolence-card-bena.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                
+                // Reset button text
+                btn.innerHTML = originalText;
+            }).catch(err => {
+                console.error("Error capturing image:", err);
+                alert("حدث خطأ أثناء حفظ الصورة. يمكنك استخدام تصوير الشاشة (Screenshot) كبديل.");
+                btn.innerHTML = originalText;
+            });
+        }
     </script>
 </body>
 </html>
-
-
