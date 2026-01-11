@@ -3,272 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>النهائي</title>
+    <title>بطاقة تعزية</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #111;
-            color: white;
-            user-select: none;
-            overflow-x: hidden;
+            background-color: #f3f4f6;
         }
-
-        /* Capture Frame & Ratios */
-        #capture-frame {
-            transition: all 0.5s ease-in-out;
-            background: linear-gradient(180deg, #022c22 0%, #064e3b 50%, #022c22 100%);
+        .ornament-font {
+            font-family: 'Amiri', serif;
+        }
+        .card-bg {
+            background-image: radial-gradient(circle at center, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .islamic-pattern {
+            background-color: #ffffff;
+            opacity: 0.1;
+            background-image:  linear-gradient(135deg, #0f172a 25%, transparent 25%), linear-gradient(225deg, #0f172a 25%, transparent 25%), linear-gradient(45deg, #0f172a 25%, transparent 25%), linear-gradient(315deg, #0f172a 25%, transparent 25%);
+            background-position:  10px 0, 10px 0, 0 0, 0 0;
+            background-size: 20px 20px;
+            background-repeat: repeat;
+        }
+        
+        /* Logo Upload Styles */
+        .logo-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%; /* Make it circular */
+            overflow: hidden;
+            border: 2px dashed #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            background-color: #f8fafc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 auto 1.5rem auto; /* Center and add bottom margin */
         }
-
-        .ratio-auto { width: 100%; max-width: 28rem; min-height: auto; border-radius: 0.75rem; padding-bottom: 1.5rem; }
-        .ratio-tiktok { width: 100%; max-width: 400px; aspect-ratio: 9/16; border-radius: 0; padding: 2rem; }
-        .ratio-square { width: 100%; max-width: 600px; aspect-ratio: 1/1; border-radius: 0; padding: 2rem; }
-        .ratio-pc { width: 100%; max-width: 900px; aspect-ratio: 16/9; border-radius: 0; padding: 2rem; }
-
-        #schedule-content { width: 100%; max-width: 28rem; position: relative; z-index: 10; }
-
-        .glass-panel {
-            background: rgba(6, 78, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .logo-container:hover {
+            border-color: #94a3b8;
+            background-color: #f1f5f9;
         }
-        
-        /* Silver Trophy Effect */
-        .silver-trophy {
-            background: linear-gradient(to bottom, #e2e8f0 0%, #94a3b8 50%, #475569 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
-            font-size: 5rem; 
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Keep logo aspect ratio */
+            display: none; /* Hidden by default until loaded */
         }
-
-        /* Clean Editable Text */
-        [contenteditable="true"] {
-            outline: none;
-            border-bottom: 1px solid transparent;
-            cursor: text;
-            display: inline-block;
-            white-space: nowrap;
-            overflow: visible;
-        }
-        [contenteditable="true"]:focus {
-            border-bottom: 1px solid rgba(252, 211, 77, 0.5);
-            background-color: rgba(0,0,0,0.1);
-        }
-        
-        @media print {
-            .no-print { display: none !important; }
-            body { background-color: white; -webkit-print-color-adjust: exact; }
-            #capture-frame { width: 100% !important; max-width: none !important; aspect-ratio: auto !important; height: auto !important; padding: 0 !important; box-shadow: none !important; }
-        }
-
-        .capturing .no-capture { display: none !important; }
-        .capturing [contenteditable="true"] { border-bottom: none !important; background-color: transparent !important; }
-
-        .fix-arabic-text {
-            letter-spacing: normal !important;
-            font-variant-ligatures: normal;
-            direction: rtl;
-            unicode-bidi: isolate;
+        .logo-placeholder {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.8rem;
+            padding: 5px;
         }
     </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- Condolence Card Container -->
+    <div class="card-bg relative w-full max-w-2xl bg-white rounded-xl overflow-hidden border-2 border-gray-200" id="cardToCapture">
+        
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 islamic-pattern z-0 pointer-events-none"></div>
+
+        <!-- Content -->
+        <div class="relative z-10 p-8 md:p-10 text-center flex flex-col items-center justify-center">
+            
+            <!-- Logo Section (Clickable) -->
+            <input type="file" id="logoInput" accept="image/*" style="display: none;" onchange="loadLogo(event)">
+            <div class="logo-container" onclick="document.getElementById('logoInput').click()" title="انقر لإضافة شعار الجمعية">
+                <img id="associationLogo" src="3275.jpg" alt="شعار الجمعية" class="logo-img" onload="this.style.display='block'; this.nextElementSibling.style.display='none'" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                <div class="logo-placeholder flex flex-col items-center justify-center h-full w-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-1 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>اضغط لإضافة<br>شعار الجمعية</span>
+                </div>
+            </div>
+
+            <!-- Basmala -->
+            <div class="text-gray-600 text-lg md:text-xl ornament-font mb-4">
+                بسم الله الرحمن الرحيم
+            </div>
+
+            <!-- Verse -->
+            <div class="w-full bg-slate-800 text-white py-4 px-6 rounded-lg shadow-sm mb-6">
+                <h2 class="text-xl md:text-2xl font-bold ornament-font leading-relaxed">
+                    "يَا أَيَّتُهَا النَّفْسُ الْمُطْمَئِنَّةُ ارْجِعِي إِلَى رَبِّكِ رَاضِيَةً مَرْضِيَّةً فَادْخُلِي فِي عِبَادِي وَادْخُلِي جَنَّتِي"
+                </h2>
+            </div>
+
+            <!-- Header: Condolence -->
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">
+                تعزية ومواساة
+            </h1>
+
+            <!-- Intro Text -->
+            <p class="text-gray-600 text-lg md:text-xl leading-relaxed max-w-lg mx-auto">
+                بقلوب مؤمنة بقضاء الله وقدره، يتقدم أعضاء مجلس الإدارة وكافة المنسوبين بخالص العزاء والمواساة لـ:
+            </p>
+
+            <!-- Name of Person -->
+            <div class="py-2 mt-2">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#b48a3e] mb-2">
+                    المهندس / أحمد خواجي
+                </h2>
+            </div>
+
+            <!-- Relation/Event -->
+            <p class="text-gray-700 text-xl md:text-2xl font-semibold">
+                في وفاة (خالته)
+            </p>
+
+            <!-- Prayer -->
+            <p class="text-gray-600 text-lg leading-relaxed mt-4 mb-6">
+                سائلين الله العلي القدير أن يتغمد الفقيدة بواسع رحمته، ويسكنها فسيح جناته، وأن يلهم أهلها وذويها الصبر والسلوان.
+            </p>
+
+            <!-- Footer / Closing -->
+            <div class="pt-6 border-t border-gray-200 w-full">
+                <p class="text-2xl font-bold text-slate-800 ornament-font">
+                    إنا لله وإنا إليه راجعون
+                </p>
+            </div>
+
+        </div>
+        
+        <!-- Decorative Bottom Bar -->
+        <div class="h-3 w-full bg-slate-800"></div>
+    </div>
+
+    <!-- Script to handle image upload preview -->
     <script>
-        function changeRatio(ratio) {
-            const frame = document.getElementById('capture-frame');
-            frame.className = ''; 
-            frame.classList.add('ratio-' + ratio);
-            if (ratio !== 'auto') {
-                document.body.style.backgroundColor = '#111';
-                document.body.style.alignItems = 'center';
+        function loadLogo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('associationLogo');
+                    const placeholder = img.nextElementSibling;
+                    
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    
+                    // Remove border/background from container for cleaner look if desired
+                    const container = document.querySelector('.logo-container');
+                    container.style.border = 'none';
+                    container.style.backgroundColor = 'transparent';
+                }
+                reader.readAsDataURL(file);
             }
         }
-
-        function downloadImage() {
-            const element = document.getElementById('capture-frame');
-            const btn = document.getElementById('download-btn');
-            
-            document.body.classList.add('capturing');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ...';
-
-            html2canvas(element, {
-                scale: 2, 
-                backgroundColor: null, 
-                useCORS: true,
-                allowTaint: true,
-                scrollY: -window.scrollY
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'النهائي.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                document.body.classList.remove('capturing');
-                btn.innerHTML = originalText;
-            }).catch(err => {
-                console.error("Error:", err);
-                alert("حدث خطأ أثناء الحفظ");
-                document.body.classList.remove('capturing');
-                btn.innerHTML = originalText;
-            });
-        }
     </script>
-</head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
-
-    <!-- Controls Bar -->
-    <div class="fixed bottom-4 left-0 right-0 z-50 flex flex-col items-center gap-2 no-print no-capture px-4">
-        <!-- Size Selector -->
-        <div class="bg-black/80 backdrop-blur text-white p-2 rounded-full shadow-lg flex gap-2 text-xs overflow-x-auto max-w-full border border-gray-700">
-            <button onclick="changeRatio('auto')" class="px-3 py-1 rounded-full hover:bg-emerald-600 focus:bg-emerald-600 transition whitespace-nowrap">تلقائي</button>
-            <button onclick="changeRatio('tiktok')" class="px-3 py-1 rounded-full hover:bg-emerald-600 focus:bg-emerald-600 transition whitespace-nowrap"><i class="fa-brands fa-tiktok"></i> تيك توك</button>
-            <button onclick="changeRatio('square')" class="px-3 py-1 rounded-full hover:bg-emerald-600 focus:bg-emerald-600 transition whitespace-nowrap"><i class="fa-brands fa-instagram"></i> مربع</button>
-            <button onclick="changeRatio('pc')" class="px-3 py-1 rounded-full hover:bg-emerald-600 focus:bg-emerald-600 transition whitespace-nowrap"><i class="fa-solid fa-desktop"></i> PC</button>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="flex gap-2">
-            <button id="download-btn" onclick="downloadImage()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-lg flex items-center gap-2 transition-all border border-blue-500">
-                <i class="fa-solid fa-image"></i>
-                حفظ الصورة
-            </button>
-            <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-full shadow-lg flex items-center gap-2 transition-all border border-emerald-500">
-                <i class="fa-solid fa-file-pdf"></i>
-                PDF
-            </button>
-        </div>
-    </div>
-
-    <!-- Main Capture Frame -->
-    <div id="capture-frame" class="ratio-auto">
-        
-        <div class="absolute top-0 left-0 w-full h-64 bg-emerald-500/20 blur-3xl pointer-events-none"></div>
-        <div class="absolute bottom-0 right-0 w-full h-64 bg-black/20 blur-3xl pointer-events-none"></div>
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
-
-        <div id="schedule-content">
-
-            <!-- Header -->
-            <div class="relative z-10 px-6 pt-8 pb-4 flex justify-between items-start">
-                <div class="flex flex-col items-center w-1/4">
-                    <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center mb-1 shadow-lg shadow-emerald-900/50">
-                        <i class="fa-solid fa-futbol text-emerald-900 text-2xl"></i>
-                    </div>
-                    <span class="text-[8px] text-center text-emerald-200/80 leading-tight mt-1 fix-arabic-text">لا تجعل الكرة عبئاً عليك وألعبها للمتعة</span>
-                </div>
-
-                <div class="flex flex-col items-center w-2/4 -mt-6">
-                    <div class="relative mb-1 flex justify-center items-center h-24 w-24">
-                         <i class="fa-solid fa-trophy silver-trophy"></i>
-                    </div>
-                </div>
-
-                <div class="flex flex-col items-center w-1/4">
-                    <div class="w-12 h-12 rounded-full border-2 border-emerald-400/30 flex items-center justify-center mb-1 bg-emerald-900/50">
-                        <i class="fa-solid fa-users text-white text-xl"></i>
-                    </div>
-                    <span class="text-[8px] text-center text-emerald-200/80 leading-tight mt-1 fix-arabic-text">جمعية بناء وتنمية مساكن</span>
-                </div>
-            </div>
-
-            <!-- Title -->
-            <div class="text-center px-4 mb-6 relative z-10">
-                <h1 contenteditable="true" class="text-lg font-bold text-emerald-100 mb-1 fix-arabic-text">بطولة كأس النخبه الرياضية</h1>
-                <p class="text-xs md:text-sm text-emerald-300/80 font-semibold bg-emerald-900/30 inline-block px-3 py-1 rounded-full border border-emerald-800 fix-arabic-text">
-                    برعاية جمعية بناء وتنمية مساكن بمنطقة جازان
-                </p>
-                <h2 contenteditable="true" class="text-4xl font-black text-white mt-4 drop-shadow-lg fix-arabic-text">النهائي</h2>
-            </div>
-
-            <!-- Date Strip -->
-            <div class="bg-[#064e3b] py-2 text-center border-y border-emerald-800 mb-8 relative z-10 shadow-md mx-4 rounded">
-                <h3 contenteditable="true" class="text-xl font-bold text-emerald-50 fix-arabic-text">الثلاثاء 9 ديسمبر</h3>
-            </div>
-
-            <!-- Matches List -->
-            <div class="px-4 space-y-4 mb-8 relative z-10">
-                
-                <!-- Match 1 -->
-                <div class="bg-[#065f46] rounded-lg p-4 flex items-center justify-between border border-emerald-700 h-24 shadow-lg hover:bg-[#065f46]/80 transition">
-                    <div class="flex items-center justify-center w-[37.5%] text-center">
-                        <span contenteditable="true" class="font-black text-white text-xl md:text-2xl tracking-wide drop-shadow-md leading-tight fix-arabic-text" dir="rtl">دفشي</span>
-                    </div>
-
-                    <div class="bg-[#064e3b] px-3 py-2 rounded text-center w-[25%] border border-emerald-600 shadow-inner">
-                        <span class="block text-[10px] text-emerald-300/70 mb-1 fix-arabic-text">مساءً</span>
-                        <span contenteditable="true" class="text-2xl font-black text-white font-mono" dir="ltr">9:00</span>
-                    </div>
-
-                    <div class="flex items-center justify-center w-[37.5%] text-center">
-                        <span contenteditable="true" class="font-black text-white text-xl md:text-2xl tracking-wide drop-shadow-md leading-tight fix-arabic-text" dir="rtl">حمدي</span>
-                    </div>
-                </div>
-
-                <!-- Match 2 -->
-                <div class="bg-[#065f46] rounded-lg p-4 flex items-center justify-between border border-emerald-700 h-24 shadow-lg hover:bg-[#065f46]/80 transition">
-                    <div class="flex items-center justify-center w-[37.5%] text-center">
-                        <span contenteditable="true" class="font-black text-white text-xl md:text-2xl tracking-wide drop-shadow-md leading-tight fix-arabic-text" dir="rtl">البلانكو</span>
-                    </div>
-
-                    <div class="bg-[#064e3b] px-3 py-2 rounded text-center w-[25%] border border-emerald-600 shadow-inner">
-                        <span class="block text-[10px] text-emerald-300/70 mb-1 fix-arabic-text">مساءً</span>
-                        <span contenteditable="true" class="text-2xl font-black text-white font-mono" dir="ltr">10:00</span>
-                    </div>
-
-                    <div class="flex items-center justify-center w-[37.5%] text-center">
-                        <span contenteditable="true" class="font-black text-white text-xl md:text-2xl tracking-wide drop-shadow-md leading-tight fix-arabic-text" dir="rtl">سما جازان</span>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Footer Info -->
-            <div class="grid grid-cols-2 gap-4 px-4 relative z-10 text-xs h-32">
-                
-                <div class="glass-panel rounded-lg p-2 flex flex-col justify-start items-center text-center shadow-md border-t-2 border-emerald-500 h-full">
-                    <div class="flex items-center gap-2 mb-2 border-b border-emerald-600/30 pb-1 w-full justify-center shrink-0">
-                        <i class="fa-solid fa-location-dot text-emerald-400"></i>
-                        <span contenteditable="true" class="text-[10px] text-emerald-100 font-bold fix-arabic-text">موقع الملعب</span>
-                    </div>
-                    <div class="w-full flex-1 flex items-center justify-center">
-                        <div class="flex justify-center items-center px-2 bg-emerald-900/40 rounded py-2 w-full h-full">
-                            <span contenteditable="true" class="text-[12px] text-white font-bold fix-arabic-text">ملعب المعبوج - جازان</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-panel rounded-lg p-2 flex flex-col justify-start items-center text-center shadow-md border-t-2 border-emerald-500 h-full">
-                    <div class="flex items-center gap-2 mb-2 border-b border-emerald-600/30 pb-1 w-full justify-center shrink-0">
-                         <i class="fa-solid fa-users-gear text-emerald-400"></i>
-                        <span class="text-[10px] text-emerald-100 font-bold fix-arabic-text">منظم البطولة للتواصل</span>
-                    </div>
-                    
-                    <div class="w-full space-y-2 flex-1 flex flex-col justify-center">
-                        <div class="flex flex-col justify-center items-center px-2 bg-emerald-900/40 rounded py-1">
-                            <span contenteditable="true" class="text-[10px] text-white font-bold mb-0.5 fix-arabic-text">عبده قاسم</span>
-                            <span contenteditable="true" class="text-[11px] text-emerald-300 font-mono dir-ltr tracking-wider font-bold">0556792173</span>
-                        </div>
-                        <div class="flex flex-col justify-center items-center px-2 bg-emerald-900/40 rounded py-1">
-                            <span contenteditable="true" class="text-[10px] text-white font-bold mb-0.5 fix-arabic-text">أحمد جني</span>
-                            <span contenteditable="true" class="text-[11px] text-emerald-300 font-mono dir-ltr tracking-wider font-bold">0536440024</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-
 </body>
 </html>
-
-
